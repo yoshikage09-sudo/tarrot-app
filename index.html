@@ -5,13 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>統合タロット占いアプリ</title>
 <meta name="theme-color" content="#120d18" />
-<link rel="manifest" href="manifest.json" />
-<meta name="mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-title" content="統合タロット" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<link rel="apple-touch-icon" href="icons/icon-192.png" />
-
 <style>
 :root{
   --bg:#0b0911;--panel:rgba(31,24,43,.88);--panel2:rgba(255,255,255,.08);--line:rgba(255,255,255,.16);
@@ -27,6 +20,20 @@ label{display:block;font-weight:800;color:#fff6d8;margin:0 0 8px}textarea,input,
 .deck{display:grid;grid-template-columns:repeat(auto-fill,minmax(74px,1fr));gap:10px}.card-back{height:118px;border-radius:13px;background:radial-gradient(circle at 50% 28%,rgba(255,255,255,.14),transparent 18%),linear-gradient(145deg,#382650,#181020 58%,#3b2a50);border:2px solid rgba(216,180,95,.78);box-shadow:0 10px 22px rgba(0,0,0,.3);cursor:pointer;position:relative;overflow:hidden}.card-back:before{content:"";position:absolute;inset:8px;border:1px solid rgba(216,180,95,.45);border-radius:9px}.card-back:after{content:"✦";position:absolute;inset:0;display:grid;place-items:center;color:var(--gold);font-size:28px}.card-back.used{opacity:.35;pointer-events:none;transform:scale(.96)}.card-back.revealed:after,.card-back.revealed:before{display:none}.card-back.revealed{background:linear-gradient(145deg,#f8ecd0,#b8934b);color:#21172b;display:grid;place-items:center;text-align:center;padding:7px}.card-back .front{display:none}.card-back.revealed .front{display:block}.card-back.selected-a{border-color:var(--green);box-shadow:0 0 0 3px rgba(136,214,173,.25),0 10px 22px rgba(0,0,0,.3)}.card-back.selected-b{border-color:var(--red);box-shadow:0 0 0 3px rgba(214,107,143,.25),0 10px 22px rgba(0,0,0,.3)}.badge{position:absolute;top:5px;left:5px;border-radius:999px;padding:2px 6px;font-size:11px;font-weight:900;color:#140f1a;z-index:2}.selected-a .badge{background:var(--green)}.selected-b .badge{background:var(--red)}.mini-icon{font-size:27px;line-height:1}.mini-name{font-size:11px;font-weight:900;line-height:1.2;margin-top:4px}.mini-ori{font-size:10px;font-weight:900;color:#4c365e;margin-top:3px}.chosen-card{margin:0 auto 18px;width:190px;min-height:285px;border-radius:18px;background:linear-gradient(145deg,#241a3e,#6a4c89);border:2px solid #d6b45f;display:grid;place-items:center;box-shadow:0 12px 34px rgba(0,0,0,.48);padding:18px;text-align:center}.chosen-card .big{font-size:28px;line-height:1.5}.reading{background:rgba(20,15,26,.76);border:1px solid rgba(216,180,95,.23);border-radius:18px;padding:16px;line-height:1.85;font-size:15px}.reading h2{margin:0 0 8px;font-size:20px;color:#ffecb0}.reading h3{margin:18px 0 4px;color:#fff6d8;font-size:16px}.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.verdict,.summary{background:rgba(216,180,95,.12);border:1px solid rgba(216,180,95,.28);border-radius:18px;padding:16px;margin-top:14px;line-height:1.85}.counter{text-align:center;color:#fde68a;font-size:13px;margin:8px 0}.spread-wrap{overflow:auto;padding:8px 0}.spread{position:relative;width:min(94vw,560px);height:min(94vw,560px);max-width:560px;max-height:560px;margin:0 auto}.slot{position:absolute;width:74px;min-height:112px;border-radius:13px;background:#ffffff12;border:1px solid #ffffff26;text-align:center;padding:6px;transform:translate(-50%,-50%);box-shadow:0 12px 20px #0007}.slot.center{width:94px;min-height:132px;background:#fef3c7;color:#111827;border:2px solid #facc15}.slot-card{height:78px;border-radius:9px;background:linear-gradient(160deg,#fef3c7,#8b5cf6 58%,#111827);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#111827;font-weight:900;border:1px solid #ffffff88;margin-bottom:5px;position:relative;overflow:hidden}.slot-card.rev{transform:rotate(180deg)}.slot-card .sym{font-size:24px;line-height:1}.slot-card .mini{font-size:10px;line-height:1.1;margin-top:4px;max-width:64px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.slot.center .slot-card{height:92px}.slot-label{font-size:10px;color:#c7d2fe;line-height:1.2}.center .slot-label{color:#6b21a8}.slot-name{font-size:11px;font-weight:800;line-height:1.2}.slot-pos{font-size:10px;color:#fde68a}.center .slot-pos{color:#92400e}.reading-item{background:#ffffff10;border:1px solid #ffffff20;border-radius:16px;padding:13px;margin:10px 0;line-height:1.7}.tag{display:inline-block;font-size:12px;color:#111827;background:#fef3c7;border-radius:999px;padding:2px 8px;margin:0 6px 6px 0}
 @media(max-width:780px){.home-grid,.row,.status,.result-grid{grid-template-columns:1fr}.deck{grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:8px}.card-back{height:104px}.topbar{align-items:flex-start;flex-direction:column}.button-row{justify-content:flex-start}}
 @media(max-width:430px){body{padding-left:10px;padding-right:10px}h1{font-size:24px}.slot{width:60px;min-height:98px;padding:5px}.slot.center{width:78px;min-height:116px}.slot-card{height:66px}.slot.center .slot-card{height:78px}.slot-card .mini{font-size:9px;max-width:50px}.slot-label{font-size:9px}.slot-name{font-size:10px}}
+
+.celtic-spread{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+.celtic-slot{min-height:128px;border-radius:16px;background:rgba(20,15,26,.72);border:1px dashed rgba(216,180,95,.32);padding:9px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.celtic-slot.filled{border-style:solid;background:linear-gradient(180deg,rgba(216,180,95,.14),rgba(255,255,255,.06))}
+.celtic-slot .slot-title{font-size:12px;font-weight:900;color:#fff6d8;line-height:1.25;margin-bottom:5px}
+.celtic-slot .slot-desc{font-size:11px;color:var(--muted);line-height:1.35}
+.celtic-slot .picked{height:76px;width:52px;border-radius:10px;background:linear-gradient(145deg,#f8ecd0,#b8934b);color:#21172b;border:1px solid rgba(255,255,255,.65);display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;margin-bottom:6px;box-shadow:0 10px 18px rgba(0,0,0,.28)}
+.celtic-slot .picked.rev{transform:rotate(180deg)}
+.celtic-slot .picked .sym{font-size:24px}
+.celtic-slot .picked .nm{font-size:9px;line-height:1.1;max-width:46px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.celtic-reading-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:780px){.celtic-spread,.celtic-reading-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:430px){.celtic-spread,.celtic-reading-grid{grid-template-columns:1fr}.celtic-slot{min-height:112px}}
+
 </style>
 </head>
 <body>
@@ -34,7 +41,7 @@ label{display:block;font-weight:800;color:#fff6d8;margin:0 0 8px}textarea,input,
 <header>
   <div class="kicker">TAROT READING APP</div>
   <h1>統合タロット占いアプリ</h1>
-  <p class="lead">最初に占いの種類を選び、占いたい内容を書いてカードを選んでください。ワンオラクル、二者択一、ホロスコープスプレッドを1つにまとめています。</p>
+  <p class="lead">最初に占いの種類を選び、占いたい内容を書いてカードを選んでください。ワンオラクル、二者択一、ホロスコープスプレッド、ケルト十字を1つにまとめています。</p>
 </header>
 
 <section id="home" class="panel">
@@ -42,12 +49,14 @@ label{display:block;font-weight:800;color:#fff6d8;margin:0 0 8px}textarea,input,
     <button class="home-card" onclick="showMode('one')"><div class="icon">🔮</div><h2>ワンオラクル</h2><p>1枚のカードで、今のテーマ・流れ・注意点を長文で読みます。</p></button>
     <button class="home-card" onclick="showMode('two')"><div class="icon">⚖️</div><h2>二者択一</h2><p>AとBの選択肢に1枚ずつカードを引き、どちらが良い流れか比較します。</p></button>
     <button class="home-card" onclick="showMode('horo')"><div class="icon">🌙</div><h2>ホロスコープ</h2><p>12枚を円形、中央に1枚。12ヶ月または12ハウスの流れを読みます。</p></button>
+    <button class="home-card" onclick="showMode('celtic')"><div class="icon">✚</div><h2>ケルト十字</h2><p>10枚で現状・障害・過去・未来・周囲・最終結果まで深く読みます。</p></button>
   </div>
 </section>
 
 <section id="one" class="hidden"></section>
 <section id="two" class="hidden"></section>
 <section id="horo" class="hidden"></section>
+<section id="celtic" class="hidden"></section>
 </div>
 <script>
 const TAROT=[
@@ -81,8 +90,8 @@ function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.fl
 function drawnDeck(){return shuffle(TAROT).map((c,i)=>({...c,id:i,rev:Math.random()<0.45}))}
 function cardHTML(c,badgeClass='',badge=''){return `<div class="front">${badge?`<span class="badge">${badge}</span>`:''}<div class="mini-icon">${c.s}</div><div class="mini-name">${c.n}</div><div class="mini-ori">${c.rev?'逆位置':'正位置'}</div></div>`}
 function textOf(c){return c.rev?c.r:c.u}function advOf(c){return c.rev?c.advR:c.advU}
-function showMode(m){['home','one','two','horo'].forEach(id=>document.getElementById(id).classList.add('hidden'));document.getElementById(m).classList.remove('hidden'); if(m==='one') initOne(); if(m==='two') initTwo(); if(m==='horo') initHoro(); window.scrollTo({top:0,behavior:'smooth'});}
-function backHome(){['one','two','horo'].forEach(id=>document.getElementById(id).classList.add('hidden'));document.getElementById('home').classList.remove('hidden');}
+function showMode(m){['home','one','two','horo','celtic'].forEach(id=>document.getElementById(id).classList.add('hidden'));document.getElementById(m).classList.remove('hidden'); if(m==='one') initOne(); if(m==='two') initTwo(); if(m==='horo') initHoro(); if(m==='celtic') initCeltic(); window.scrollTo({top:0,behavior:'smooth'});}
+function backHome(){['one','two','horo','celtic'].forEach(id=>document.getElementById(id).classList.add('hidden'));document.getElementById('home').classList.remove('hidden');}
 function oneReading(q,c){return `<h2>選ばれたカード：${c.n}（${c.rev?'逆位置':'正位置'}）</h2><h3>結論</h3><p>${esc(q)}については、「${textOf(c)}」という流れが出ています。今すぐ白黒を決めるというより、このカードが示すテーマを意識することで、状況の見え方がかなり変わります。</p><h3>今の流れ</h3><p>${textOf(c)} この流れは、表面的な結果だけではなく、あなたが何を整えるべきかも示しています。正位置なら比較的素直に力が出やすく、逆位置なら慎重な修正によって良い方向へ戻せます。</p><h3>注意点</h3><p>焦って結論だけを急ぐと、カードが示している細かいサインを見落としやすくなります。特に現実の条件、相手の反応、金額、時期、体力面などは、感情と分けて確認してください。</p><h3>アドバイス</h3><p>${advOf(c)} 今回の答えは「全部を一気に変える」より、今見えている違和感や希望をひとつずつ扱うことで強くなります。小さく試し、反応を見て、必要なら修正する。そうするとこのカードの良い面を引き出しやすくなります。</p>`}
 function initOne(){document.getElementById('one').innerHTML=`<div class="topbar"><h2>🔮 ワンオラクル</h2><button class="ghost" onclick="backHome()">占い選択に戻る</button></div><section class="panel"><label>占いたい内容</label><textarea id="oneQ" placeholder="例：今の判断は良い方向に進みますか？"></textarea></section><section class="panel"><div class="section-title">カードを1枚選んでください</div><div id="oneDeck" class="deck"></div></section><section id="oneResult" class="panel hidden"></section>`;const deck=drawnDeck();const el=document.getElementById('oneDeck');deck.forEach(c=>{const b=document.createElement('button');b.className='card-back';b.onclick=()=>{const q=document.getElementById('oneQ').value.trim();if(!q){alert('占いたい内容を入力してください。');return}document.querySelectorAll('#oneDeck .card-back').forEach(x=>x.disabled=true);b.className='card-back revealed used';b.innerHTML=cardHTML(c);document.getElementById('oneResult').classList.remove('hidden');document.getElementById('oneResult').innerHTML=`<div class="chosen-card"><div class="big">${c.s}<br>${c.n}<br><span class="small">${c.rev?'逆位置':'正位置'}</span></div></div><div class="reading">${oneReading(q,c)}</div><div class="button-row"><button onclick="initOne()">もう一度占う</button></div>`;};el.appendChild(b);});}
 let twoState;
@@ -100,14 +109,110 @@ function labels(){if(document.getElementById('horoMode').value==='houses')return
 function renderSpread(){document.getElementById('spreadPanel').classList.remove('hidden');const sp=document.getElementById('spread');sp.innerHTML='';const labs=labels();const w=sp.clientWidth||560,h=sp.clientHeight||560,cx=w/2,cy=h/2,r=w*.41;for(let i=0;i<12;i++){const ang=(-90+i*30)*Math.PI/180;sp.appendChild(slot(horoSelected[i],labs[i],cx+Math.cos(ang)*r,cy+Math.sin(ang)*r,false));}sp.appendChild(slot(horoSelected[12],'中央：総合結果',cx,cy,true));}
 function slot(c,label,x,y,center){const d=document.createElement('div');d.className='slot'+(center?' center':'');d.style.left=x+'px';d.style.top=y+'px';d.innerHTML=`<div class="slot-card ${c.rev?'rev':''}"><div class="sym">${c.s}</div><div class="mini">${c.n}</div></div><div class="slot-label">${esc(label)}</div><div class="slot-name">${c.n}</div><div class="slot-pos">${c.rev?'逆位置':'正位置'}</div>`;return d;}
 function renderHoroReading(){const q=document.getElementById('horoQ').value.trim();const center=horoSelected[12];const labs=labels();document.getElementById('readingPanel').classList.remove('hidden');document.getElementById('summary').innerHTML=`<h2>総合結果：${center.n}（${center.rev?'逆位置':'正位置'}）</h2><p>${esc(q)}の全体テーマは「${textOf(center)}」です。</p><p>${advOf(center)} 12枚の流れは、この中央カードをどう現実に落とし込むかを示しています。</p>`;document.getElementById('horoReading').innerHTML='<h2>各カードの読み</h2>'+horoSelected.slice(0,12).map((c,i)=>`<div class="reading-item"><h3>${esc(labs[i])}：${c.n}（${c.rev?'逆位置':'正位置'}）</h3><span class="tag">${c.cat}</span><p>${textOf(c)}</p><p class="small"><strong>アドバイス：</strong>${advOf(c)}</p></div>`).join('');}
-</script>
 
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./service-worker.js').catch(console.error);
+const celticPositions=[
+["現在","問題の中心。今いちばん強く出ている状態"],
+["障害","現在に交差する力。邪魔・課題・乗り越える壁"],
+["顕在意識","頭で考えていること。表向きの希望や判断"],
+["潜在意識","心の奥の本音。自分でも見落としやすい土台"],
+["過去","ここに至った背景。すでに影響している出来事"],
+["近未来","このまま進んだ場合に近づきやすい流れ"],
+["自分自身","あなたの姿勢、取るべき態度、内側の状態"],
+["周囲の環境","相手・市場・職場・家族など外部要因"],
+["願望と不安","期待していることと、同時に怖れていること"],
+["最終結果","全体の着地点。今の流れを続けた場合の結論"]
+];
+let celticDeck=[],celticSelected=[];
+function initCeltic(){
+  celticDeck=drawnDeck();
+  celticSelected=[];
+  document.getElementById('celtic').innerHTML=`<div class="topbar"><h2>✚ ケルト十字</h2><button class="ghost" onclick="backHome()">占い選択に戻る</button></div>
+  <section class="panel">
+    <label>占いたい内容</label>
+    <textarea id="celticQ" placeholder="例：今の物件売却はどう進めるのが良いか／仕事の今後の流れを知りたい"></textarea>
+    <div class="button-row"><button onclick="initCeltic()">カードをシャッフルし直す</button></div>
+    <p id="celticStatus" class="small" style="margin-top:10px">カードはすでにシャッフル済みで、正位置・逆位置もこの時点で固定されています。10枚選んでください。</p>
+  </section>
+  <section class="panel">
+    <div class="section-title">ケルト十字スプレッド</div>
+    <div id="celticCounter" class="counter">0 / 10</div>
+    <div id="celticSpread" class="celtic-spread"></div>
+  </section>
+  <section class="panel">
+    <div class="section-title">カードを10枚選んでください</div>
+    <div id="celticDeck" class="deck"></div>
+  </section>
+  <section id="celticResult" class="panel hidden"></section>`;
+  renderCelticSpread();
+  renderCelticDeck();
+}
+function renderCelticSpread(){
+  const el=document.getElementById('celticSpread');
+  el.innerHTML='';
+  celticPositions.forEach((p,i)=>{
+    const c=celticSelected[i];
+    const d=document.createElement('div');
+    d.className='celtic-slot'+(c?' filled':'');
+    d.innerHTML=c
+      ? `<div class="picked ${c.rev?'rev':''}"><div class="sym">${c.s}</div><div class="nm">${c.n}</div></div><div class="slot-title">${i+1}. ${p[0]}</div><div class="slot-desc">${c.n} / ${c.rev?'逆位置':'正位置'}</div>`
+      : `<div class="slot-title">${i+1}. ${p[0]}</div><div class="slot-desc">${p[1]}</div>`;
+    el.appendChild(d);
+  });
+  document.getElementById('celticCounter').textContent=celticSelected.length+' / 10';
+}
+function renderCelticDeck(){
+  const el=document.getElementById('celticDeck');
+  el.innerHTML='';
+  celticDeck.forEach(c=>{
+    const b=document.createElement('button');
+    b.className='card-back'+(celticSelected.includes(c)?' used':'');
+    b.disabled=celticSelected.includes(c)||celticSelected.length>=10;
+    b.onclick=()=>pickCeltic(c);
+    el.appendChild(b);
   });
 }
+function pickCeltic(c){
+  const q=document.getElementById('celticQ').value.trim();
+  if(!q){alert('占いたい内容を入力してください。');return}
+  if(celticSelected.length>=10||celticSelected.includes(c))return;
+  celticSelected.push(c);
+  renderCelticSpread();
+  renderCelticDeck();
+  document.getElementById('celticStatus').textContent=celticSelected.length<10?`${10-celticSelected.length}枚選んでください。`:'10枚選び終わりました。結果を作成しました。';
+  if(celticSelected.length===10)renderCelticReading();
+}
+function celticTone(c){
+  if(c.rev)return '注意';
+  if(['太陽','世界','星','女帝','魔術師','戦車','運命の輪','節制','恋人','皇帝','教皇'].includes(c.n))return '前向き';
+  if(['塔','悪魔','死神','月','吊るされた男'].includes(c.n))return '慎重';
+  return '中立';
+}
+function celticPositionReading(pos,c,q,i){
+  const tone=celticTone(c);
+  let extra='';
+  if(tone==='前向き')extra='この位置では、このカードの良い面が比較的まっすぐ出ています。今ある流れを否定するより、強みとして使う方が結果につながります。';
+  else if(tone==='慎重')extra='この位置では、古い前提・不安・急な変化が出やすくなっています。悪い結果と決めつけるより、先に崩れやすい部分を把握することが大切です。';
+  else if(tone==='注意')extra='逆位置なので、このカードの意味は素直に出るというより、滞り・過剰・タイミングのズレとして表れます。焦って押すより、条件を整えるほど良くなります。';
+  else extra='この位置では、極端な判断よりも現実的な見直しが効きます。今ある材料を丁寧に整理することで、次の一手が見えやすくなります。';
+  return `<div class="reading-item"><h3>${i+1}. ${pos[0]}：${c.n}（${c.rev?'逆位置':'正位置'}）</h3><span class="tag">${c.cat}</span><p>${pos[1]}を示す場所に「${c.n}」が出ています。意味は「${textOf(c)}」です。</p><p>${extra}</p><p class="small"><strong>アドバイス：</strong>${advOf(c)}</p></div>`;
+}
+function renderCelticReading(){
+  const q=document.getElementById('celticQ').value.trim();
+  const result=document.getElementById('celticResult');
+  const finalCard=celticSelected[9];
+  const positive=celticSelected.filter(c=>celticTone(c)==='前向き').length;
+  const caution=celticSelected.filter(c=>celticTone(c)==='注意'||celticTone(c)==='慎重').length;
+  let total='';
+  if(positive>caution)total='全体としては、前向きなカードの力が強く、現状の流れを活かしながら整えていくことで結果に近づきやすい配置です。';
+  else if(caution>positive)total='全体としては、慎重に進めるべき配置です。悪いというより、見落とし・焦り・条件不足を先につぶすほど結果が安定します。';
+  else total='全体としては、良い要素と注意点が拮抗しています。大きく方向転換するより、強い部分を残しながら弱点を補う読みになります。';
+  result.classList.remove('hidden');
+  result.innerHTML=`<div class="summary"><h2>ケルト十字 総合結果</h2><p><strong>占いたい内容：</strong>${esc(q)}</p><p>${total}</p><p>最終結果は「${finalCard.n}（${finalCard.rev?'逆位置':'正位置'}）」です。${textOf(finalCard)} 今の流れを続けた場合、このカードが示す方向に着地しやすいと読めます。</p></div>
+  <div class="reading"><h2>10枚の詳細リーディング</h2>${celticSelected.map((c,i)=>celticPositionReading(celticPositions[i],c,q,i)).join('')}</div>
+  <div class="verdict"><h2>行動アドバイス</h2><p>まず「現在」と「障害」を見て、今すぐ手を入れるべき部分を確認してください。次に「過去」と「近未来」を見て、今の流れがどこから来て、短期的にどこへ向かいやすいかを判断します。</p><p>特に「周囲の環境」の${celticSelected[7].n}と、「願望と不安」の${celticSelected[8].n}は、本人の気持ちだけでは動かせない部分を示します。期待だけで進めず、相手・市場・周囲の反応を確認しながら進めるのが安全です。</p><p>最後の${finalCard.n}は固定された未来ではなく、今の流れを続けた場合の着地点です。行動を変えれば読みも変わるため、今回の結果は判断材料として使ってください。</p></div>`;
+  setTimeout(()=>result.scrollIntoView({behavior:'smooth',block:'start'}),120);
+}
+
 </script>
 </body>
 </html>
