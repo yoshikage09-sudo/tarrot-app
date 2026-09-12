@@ -11,13 +11,16 @@
 </head>
 <body>
 <div class="bar"><a href="index.html">← 占い選択に戻る</a><div id="title" class="title">タロット占い</div></div>
-<iframe id="app" src="app.html" title="タロット占いアプリ"></iframe>
+<iframe id="app" title="タロット占いアプリ"></iframe>
 <script>
-const names={one:'ワンオラクル',two:'二者択一',horo:'ホロスコープ',celtic:'ケルト十字'};
+const names={one:'ワンオラクル',two:'二者択一',five:'5スプレッド',horo:'ホロスコープ',celtic:'ケルト十字'};
 const mode=new URLSearchParams(location.search).get('m');
+const frame=document.getElementById('app');
 document.getElementById('title').textContent=names[mode]||'タロット占い';
-document.getElementById('app').addEventListener('load',()=>{
-  const w=document.getElementById('app').contentWindow;
+frame.src=mode==='five'?'five-spread.html':'app.html';
+frame.addEventListener('load',()=>{
+  if(mode==='five') return;
+  const w=frame.contentWindow;
   if(mode&&names[mode]&&typeof w.showMode==='function') w.showMode(mode);
 });
 </script>
