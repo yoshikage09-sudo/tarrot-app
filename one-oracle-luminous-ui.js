@@ -6,31 +6,14 @@
   const game=new OracleCore.Oracle();
   const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
   let stage='idle', busy=false;
-  const room=scene.querySelector('.room');
   const dust=$('stardust');
-  for(let i=0;i<24;i++){
+  for(let i=0;i<32;i++){
     const mote=document.createElement('i');
-    const angle=i*Math.PI*2/24;
-    mote.style.cssText='--dx:'+Math.cos(angle)*(85+i%4*25)+'px;--dy:'+Math.sin(angle)*(90+i%5*22)+'px;--delay:'+i%6*.055+'s;--size:'+(i%4===0?4:2)+'px';
+    const angle=i*Math.PI*2/32;
+    mote.className=i%4===0?'star-flare':'';
+    mote.style.cssText='--dx:'+Math.cos(angle)*(105+i%4*25)+'px;--dy:'+Math.sin(angle)*(125+i%5*24)+'px;--delay:'+i%8*.085+'s;--size:'+(i%4===0?4:2)+'px';
     dust.append(mote);
   }
-  let threadFrame=0;
-  function updateThread(){
-    threadFrame=0;
-    if(stage!=='select'||game.selected===null)return;
-    const box=room.getBoundingClientRect(), core=scene.querySelector('.core').getBoundingClientRect();
-    const card=orbit.children[game.selected].getBoundingClientRect();
-    const x1=core.x+core.width/2-box.x,y1=core.y+core.height/2-box.y;
-    const x2=card.x+card.width/2-box.x,y2=card.y-box.y+10;
-    const visible=x2>=0&&x2<=box.width;
-    $('goldThread').style.opacity=visible?'1':'0';
-    $('threadPath').setAttribute('d','M '+x1+' '+y1+' Q '+(x1+x2)/2+' '+(Math.min(y1,y2)-48)+' '+x2+' '+y2);
-    $('threadTip').setAttribute('cx',x2);$('threadTip').setAttribute('cy',y2);
-  }
-  function scheduleThread(){if(!threadFrame)threadFrame=requestAnimationFrame(updateThread);}
-  $('orbitWindow').addEventListener('scroll',scheduleThread,{passive:true});
-  window.addEventListener('resize',scheduleThread,{passive:true});
-  orbit.addEventListener('transitionend',scheduleThread);
   function ritual(state){scene.dataset.ritual=state;}
   ritual('idle');
   const wait=ms=>new Promise(resolve=>setTimeout(resolve,reduced?0:ms));
@@ -41,7 +24,7 @@
     game.select(index);
     [...orbit.children].forEach((el,i)=>el.setAttribute('aria-pressed',String(i===index)));
     const selected=orbit.children[index];
-    scene.classList.add('attuned');scheduleThread();
+    scene.classList.add('attuned');
     $('orbitWindow').scrollTo({left:selected.offsetLeft-($('orbitWindow').clientWidth-44)/2,behavior:reduced?'instant':'smooth'});
     if(focus)selected.focus({preventScroll:true});
     $('selectionLabel').textContent=`${index+1} / 22 枚目を選択中`;
@@ -99,7 +82,7 @@
         announce('05 / 一枚を選ぶ','惹かれるカードに触れてください。選び直せます。');
         setAction('カードを選んでください',true);orbit.children[10].focus({preventScroll:true});
       } else if(stage==='select'){
-        const card=game.confirm();stage='reveal';ritual('gather');scene.classList.remove('attuned');$('goldThread').style.opacity='0';$('selectionControls').hidden=true;
+        const card=game.confirm();stage='reveal';ritual('gather');scene.classList.remove('attuned');$('selectionControls').hidden=true;
         announce('06 / 記録をひらく','あなたの一枚が、星核のもとへ…');
         const chosen=orbit.children[game.selected],from=chosen.getBoundingClientRect();
         const reveal=$('revealCard');reveal.hidden=false;
@@ -128,7 +111,7 @@
   action.addEventListener('click',run);
   $('restart').addEventListener('click',()=>{
     if(busy)return;
-    game.reset();stage='idle';ritual('idle');scene.classList.remove('attuned');$('goldThread').style.opacity='0';scene.classList.remove('playing','cleared','unlocked','dealing');
+    game.reset();stage='idle';ritual('idle');scene.classList.remove('attuned');scene.classList.remove('playing','cleared','unlocked','dealing');
     deck.hidden=false;deck.className='deck';orbit.replaceChildren();
     for(const id of ['orbitWindow','cutControls','selectionControls','revealCard','restart'])$(id).hidden=true;
     $('revealCard').classList.remove('flipped');$('cutPosition').value=11;$('cutValue').value='11 / 22';
