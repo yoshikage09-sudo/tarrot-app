@@ -1,0 +1,66 @@
+/* Only the new flow demo uses these overrides. */
+[hidden]{display:none!important}
+.scene{min-height:100svh}
+.scene::after{z-index:1}
+.badge{display:none}
+.header{padding-top:18px}
+.header .prompt{font-size:11px;margin-top:8px}
+.room{height:clamp(340px,51svh,490px);min-height:0;padding:0;max-width:680px}
+.owl{width:clamp(74px,20vw,112px);top:24%;left:4%;opacity:.85;pointer-events:none}
+.board-area{width:min(96vw,600px);bottom:-8%;pointer-events:none}
+.diagram{top:50%;width:72%}
+.core-halo,.pulse-ring,.core,.beam-dot{top:54%}
+.core{width:clamp(42px,11vw,64px)}
+.mist{pointer-events:none;transition:opacity 1.5s,transform 1.5s}
+.scene.cleared .mist{opacity:0;transform:translateY(30px)}
+.bottom{position:relative;z-index:45;bottom:auto;left:auto;transform:none;width:min(100%,520px);margin:0 auto;padding:8px 20px calc(18px + env(safe-area-inset-bottom));text-align:center}
+.caption{font-size:11px;letter-spacing:.12em;color:var(--gold)}
+.status{min-height:38px;margin:7px 0;font-size:13px;line-height:1.6}
+.bottom button{min-height:46px;touch-action:manipulation}
+.bottom #action{width:100%;max-width:350px}
+button:disabled{opacity:.45;cursor:default}
+button:focus-visible,input:focus-visible{outline:2px solid #fff0b5;outline-offset:4px}
+.secondary-button{background:transparent!important;color:var(--gold)!important;box-shadow:none!important}
+.hint,.demo-note{font-size:10px;line-height:1.6;color:var(--muted);margin:7px 0}
+.demo-note{opacity:.7;margin-top:12px}
+#cutControls{margin:10px auto;max-width:340px;font-size:12px}
+#cutControls label{display:flex;justify-content:space-between}
+input[type=range]{width:100%;height:44px;accent-color:var(--gold)}
+.navigation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:12px}
+.navigation button{width:46px;padding:0;font-size:22px}
+.deck{position:absolute;left:50%;top:28%;width:76px;height:120px;transform:translateX(-50%);z-index:26}
+.deck i,.orbit-card,.card-back{border:1px solid #d7b86b;border-radius:7px;background:radial-gradient(circle at center,#304161,#102b46 42%,#081421 100%);box-shadow:0 6px 14px #0006}
+.deck i{position:absolute;inset:0;display:grid;place-items:center;color:var(--gold)}
+.deck i::after{content:'✦';border:1px solid #d7b86b66;position:absolute;inset:6px;display:grid;place-items:center;font-size:28px}
+.deck i:nth-child(1){transform:translate(-4px,4px)}
+.deck i:nth-child(2){transform:translate(0,0)}
+.deck i:nth-child(3){transform:translate(4px,-4px)}
+.deck.shuffling i:nth-child(2){animation:overhand .48s ease-in-out 3}
+.deck.shuffling i:nth-child(3){animation:overhand .48s ease-in-out .16s 3}
+@keyframes overhand{0%,100%{transform:translate(4px,-4px) rotate(0)}40%{transform:translate(38px,-42px) rotate(9deg)}75%{transform:translate(-7px,12px) rotate(-4deg)}}
+.deck.cutting i:nth-child(3){transform:translate(55px,-20px);transition:transform .3s}
+.orbit-window{position:absolute;left:0;right:0;bottom:0;height:166px;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:#d7b86b55 transparent;z-index:30;scroll-snap-type:x proximity}
+.orbit{position:relative;width:1100px;height:155px;margin:auto}
+.orbit-card{position:absolute;top:var(--y);left:var(--x);width:44px;height:72px;padding:0;color:var(--gold);transform:rotate(var(--r));transition:transform .2s,border-color .2s,opacity .3s;scroll-snap-align:center;cursor:pointer}
+.orbit-card::before{content:'✦';position:absolute;inset:4px;border:1px solid #d7b86b66;border-radius:4px;display:grid;place-items:center;font-size:20px}
+.orbit-card[aria-pressed=true]{transform:translateY(-13px) rotate(0);border:2px solid #fff0b5;box-shadow:0 0 16px #dec17677}
+.orbit-card:disabled{opacity:.18}
+.orbit-card.chosen-hidden{visibility:hidden}
+.scene.dealing .orbit-card{animation:deal .4s ease-out both;animation-delay:var(--delay)}
+@keyframes deal{from{opacity:0;transform:translateY(32px) rotate(0)}to{opacity:1}}
+.reveal-card{position:absolute;left:50%;top:34%;width:88px;height:141px;margin-left:-44px;z-index:35;perspective:800px}
+.card-turn{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.4,0,.2,1)}
+.reveal-card.flipped .card-turn{transform:rotateY(180deg)}
+.card-back,.card-front{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:7px;display:flex;align-items:center;justify-content:center}
+.card-back{font-size:34px;color:var(--gold)}
+.card-back::after{content:'';position:absolute;inset:7px;border:1px solid #d7b86b88;border-radius:4px}
+.card-front{transform:rotateY(180deg);background:linear-gradient(150deg,#f3dfad,#bd9c61);border:1px solid #fff0b5;color:#152438;flex-direction:column;gap:8px;box-shadow:0 0 25px #dec17644}
+.card-front small{font-size:7px;letter-spacing:.08em}
+.card-front strong{font-size:12px;text-align:center}
+.card-front .emblem{font-size:37px;line-height:1}
+.scene.unlocked .diagram .draw,.scene.unlocked .diagram .node-line{stroke-dashoffset:0;transition:stroke-dashoffset .8s}
+.scene.unlocked .diagram .star-node{opacity:1;transition:opacity .8s}
+.scene.unlocked .diagram{opacity:.6}
+.scene.playing .diagram{opacity:1}
+@media(min-width:700px){.orbit{width:1100px}.room{height:480px}.bottom{padding-top:12px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
