@@ -2,254 +2,2035 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#07121f">
-<title>アストラルライブラリー｜ワンオラクル試作 Stage 1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#07111f">
+
+<title>アストラルライブラリー｜ワンオラクル</title>
+
 <style>
 :root{
-  --bg:#07121f;
-  --bg2:#0b1a2b;
-  --navy:#10253d;
-  --gold:#d8bb72;
-  --gold2:#f3dd9a;
-  --ivory:#f8f3e6;
-  --muted:#b9c3d3;
-  --violet:#9281d6;
+  --night:#040914;
+  --night2:#071321;
+  --navy:#0b1d32;
+  --navy2:#102b46;
+
+  --gold:#d7b86b;
+  --gold-bright:#f7e3a1;
+
+  --ivory:#fff8e7;
+  --text:#e7edf5;
+  --muted:#adb9c9;
+
+  --violet:#8d79cb;
+  --blue:#5c92c7;
 }
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;font-family:"Hiragino Sans","Yu Gothic",system-ui,-apple-system,sans-serif;color:var(--ivory);background:#050b14}
-body{overflow-x:hidden}
-button{font:inherit}
-.scene{
+
+/* --------------------------------------------------
+   BASE
+-------------------------------------------------- */
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  margin:0;
+  min-height:100%;
+}
+
+body{
+  background:#020610;
+  color:var(--text);
+  font-family:
+    "Hiragino Sans",
+    "Yu Gothic",
+    "YuGothic",
+    system-ui,
+    -apple-system,
+    sans-serif;
+
+  overflow-x:hidden;
+}
+
+a{
+  color:inherit;
+}
+
+button{
+  font:inherit;
+}
+
+/* --------------------------------------------------
+   MAIN SCENE
+-------------------------------------------------- */
+
+.astral-scene{
   position:relative;
   min-height:100vh;
-  isolation:isolate;
   overflow:hidden;
+  isolation:isolate;
+
   background:
-    radial-gradient(circle at 50% 12%,rgba(137,164,223,.18),transparent 22%),
-    radial-gradient(circle at 50% 63%,rgba(88,102,176,.20),transparent 28%),
-    linear-gradient(180deg,#0b1828 0%,#08131f 48%,#040a12 100%);
+    radial-gradient(
+      circle at 50% 14%,
+      rgba(104,135,194,.22),
+      transparent 24%
+    ),
+
+    radial-gradient(
+      ellipse at 48% 63%,
+      rgba(89,74,159,.22),
+      transparent 30%
+    ),
+
+    radial-gradient(
+      ellipse at 65% 72%,
+      rgba(41,100,150,.13),
+      transparent 32%
+    ),
+
+    linear-gradient(
+      180deg,
+      #0b1727 0%,
+      #071321 38%,
+      #040a13 74%,
+      #02050c 100%
+    );
 }
-.scene:before{
+
+/* vignette */
+
+.astral-scene::after{
   content:"";
-  position:absolute;inset:0;z-index:-3;
+  position:absolute;
+  inset:0;
+
+  pointer-events:none;
+
   background:
-    linear-gradient(90deg,rgba(4,10,18,.85),transparent 23%,transparent 77%,rgba(4,10,18,.85)),
-    repeating-linear-gradient(90deg,transparent 0 8.5%,rgba(217,187,114,.03) 8.7% 8.9%,transparent 9.1% 17%);
+    linear-gradient(
+      90deg,
+      rgba(0,0,0,.68),
+      transparent 21%,
+      transparent 79%,
+      rgba(0,0,0,.68)
+    ),
+
+    linear-gradient(
+      180deg,
+      rgba(0,0,0,.08),
+      transparent 55%,
+      rgba(0,0,0,.52)
+    );
+
+  z-index:40;
 }
-.stars,.stars:before,.stars:after{
-  position:absolute;inset:0;content:"";pointer-events:none;
+
+/* --------------------------------------------------
+   STARS
+-------------------------------------------------- */
+
+.starfield{
+  position:absolute;
+  inset:0;
+
+  z-index:-10;
+
   background-image:
-    radial-gradient(circle at 16% 18%,#fff 0 1px,transparent 1.4px),
-    radial-gradient(circle at 28% 34%,#fff8d0 0 1px,transparent 1.5px),
-    radial-gradient(circle at 72% 22%,#fff 0 1px,transparent 1.4px),
-    radial-gradient(circle at 82% 41%,#d7d9ff 0 1px,transparent 1.4px),
-    radial-gradient(circle at 45% 15%,#fff 0 1px,transparent 1.2px),
-    radial-gradient(circle at 61% 31%,#ffeab7 0 1px,transparent 1.4px),
-    radial-gradient(circle at 20% 56%,#fff 0 1px,transparent 1.3px),
-    radial-gradient(circle at 77% 59%,#fff 0 1px,transparent 1.2px);
+
+    radial-gradient(circle at 8% 9%, #fff 0 1px, transparent 1.4px),
+    radial-gradient(circle at 17% 20%, #ffe8a8 0 1px, transparent 1.4px),
+    radial-gradient(circle at 27% 8%, #fff 0 1px, transparent 1.3px),
+    radial-gradient(circle at 39% 23%, #cbdcff 0 1px, transparent 1.5px),
+
+    radial-gradient(circle at 49% 12%, #fff 0 1.2px, transparent 1.6px),
+    radial-gradient(circle at 59% 27%, #e9dcff 0 1px, transparent 1.5px),
+    radial-gradient(circle at 67% 8%, #fff8d6 0 1px, transparent 1.5px),
+    radial-gradient(circle at 78% 21%, #fff 0 1px, transparent 1.5px),
+
+    radial-gradient(circle at 91% 13%, #dccbff 0 1px, transparent 1.4px),
+    radial-gradient(circle at 13% 47%, #fff 0 1px, transparent 1.4px),
+    radial-gradient(circle at 24% 63%, #dbeaff 0 1px, transparent 1.5px),
+    radial-gradient(circle at 82% 52%, #fff0c0 0 1px, transparent 1.5px),
+
+    radial-gradient(circle at 71% 66%, #fff 0 1px, transparent 1.4px),
+    radial-gradient(circle at 35% 76%, #d4d5ff 0 1px, transparent 1.5px);
+
+  opacity:.7;
+}
+
+.starfield::before,
+.starfield::after{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  background:inherit;
+}
+
+.starfield::before{
+  transform:translate(7%,18%) scale(.82);
+  opacity:.43;
+}
+
+.starfield::after{
+  transform:translate(-12%,32%) scale(.72);
+  opacity:.28;
+}
+
+/* --------------------------------------------------
+   LIBRARY ARCHITECTURE
+-------------------------------------------------- */
+
+.library{
+  position:absolute;
+  inset:0;
+  z-index:-8;
+
+  pointer-events:none;
+}
+
+/* main celestial window */
+
+.main-window{
+  position:absolute;
+
+  left:50%;
+  top:8%;
+
+  width:min(68vw,590px);
+  height:min(69vh,720px);
+
+  transform:translateX(-50%);
+
+  border:
+    1px solid
+    rgba(216,184,107,.26);
+
+  border-bottom:none;
+
+  border-radius:
+    52% 52% 0 0 /
+    25% 25% 0 0;
+
+  box-shadow:
+    inset 0 0 80px rgba(89,125,187,.09),
+    0 0 100px rgba(0,0,0,.42);
+}
+
+.main-window::before{
+  content:"";
+
+  position:absolute;
+  inset:7% 9% 0;
+
+  border:
+    1px solid
+    rgba(216,184,107,.12);
+
+  border-bottom:none;
+
+  border-radius:
+    54% 54% 0 0 /
+    26% 26% 0 0;
+}
+
+.main-window::after{
+  content:"";
+
+  position:absolute;
+
+  left:50%;
+  top:2%;
+  bottom:0;
+
+  width:1px;
+
+  background:
+    linear-gradient(
+      transparent,
+      rgba(216,184,107,.18),
+      rgba(216,184,107,.05)
+    );
+}
+
+/* shelves */
+
+.shelf{
+  position:absolute;
+
+  top:8%;
+  bottom:0;
+
+  width:19%;
+
+  opacity:.48;
+}
+
+.shelf.left{
+  left:0;
+}
+
+.shelf.right{
+  right:0;
+}
+
+.shelf::before{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  background:
+
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 10%,
+      rgba(205,175,101,.17) 10.2% 10.5%,
+      transparent 10.8% 18%
+    ),
+
+    repeating-linear-gradient(
+      90deg,
+      rgba(9,19,31,.75) 0 10%,
+      rgba(90,72,46,.18) 10% 13%,
+      rgba(9,19,31,.70) 13% 20%
+    );
+
+  border-left:
+    1px solid rgba(216,184,107,.14);
+
+  border-right:
+    1px solid rgba(216,184,107,.14);
+}
+
+/* pillars */
+
+.pillar{
+  position:absolute;
+
+  top:0;
+  bottom:0;
+
+  width:24px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(62,48,27,.35),
+      rgba(222,194,119,.24),
+      rgba(73,58,34,.19)
+    );
+
+  box-shadow:
+    0 0 20px rgba(0,0,0,.4);
+}
+
+.pillar.p1{
+  left:20%;
+}
+
+.pillar.p2{
+  right:20%;
+}
+
+/* --------------------------------------------------
+   HEADER
+-------------------------------------------------- */
+
+.header{
+  position:relative;
+
+  z-index:30;
+
+  text-align:center;
+
+  padding:
+    calc(env(safe-area-inset-top) + 18px)
+    18px
+    0;
+}
+
+.back-button{
+  position:absolute;
+
+  left:15px;
+  top:calc(env(safe-area-inset-top) + 17px);
+
+  width:44px;
+  height:44px;
+
+  border-radius:50%;
+
+  display:grid;
+  place-items:center;
+
+  text-decoration:none;
+
+  border:
+    1px solid
+    rgba(232,204,132,.36);
+
+  color:#fff8db;
+
+  background:
+    rgba(5,13,23,.48);
+
+  backdrop-filter:
+    blur(10px);
+
+  font-size:27px;
+  font-family:Georgia,serif;
+}
+
+.brand-star{
+  color:var(--gold-bright);
+
+  font-size:18px;
+
+  text-shadow:
+    0 0 14px
+    rgba(246,225,158,.5);
+}
+
+.brand{
+  margin-top:4px;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:11px;
+
+  letter-spacing:.25em;
+
+  color:#e8d69c;
+}
+
+.title{
+  margin:
+    10px 0 1px;
+
+  font-family:
+    "Yu Mincho",
+    "Hiragino Mincho ProN",
+    Georgia,
+    serif;
+
+  font-size:
+    clamp(27px,7vw,40px);
+
+  font-weight:500;
+
+  color:#fff4d1;
+
+  letter-spacing:.05em;
+
+  text-shadow:
+    0 0 26px
+    rgba(228,195,109,.18);
+}
+
+.subtitle{
+  font-family:
+    Georgia,
+    serif;
+
+  font-size:10px;
+
+  letter-spacing:.32em;
+
+  color:#bca466;
+}
+
+.divider{
+  margin:
+    12px auto 0;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  gap:10px;
+
+  width:150px;
+}
+
+.divider::before,
+.divider::after{
+  content:"";
+
+  height:1px;
+  flex:1;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(218,186,108,.45)
+    );
+}
+
+.divider::after{
+  transform:scaleX(-1);
+}
+
+.divider span{
+  color:#efd888;
+  font-size:10px;
+}
+
+.prompt{
+  margin:
+    11px auto 0;
+
+  max-width:480px;
+
+  font-size:12px;
+
+  line-height:1.8;
+
+  color:#d7deea;
+}
+
+/* --------------------------------------------------
+   ROOM
+-------------------------------------------------- */
+
+.room{
+  position:relative;
+
+  max-width:760px;
+
+  margin:
+    0 auto;
+
+  min-height:
+    min(760px,73vh);
+
+  padding:
+    10px 5px 100px;
+
+  z-index:10;
+}
+
+/* --------------------------------------------------
+   OWL
+-------------------------------------------------- */
+
+.owl{
+  position:absolute;
+
+  left:
+    clamp(-2px,4vw,35px);
+
+  top:27%;
+
+  width:
+    clamp(112px,28vw,182px);
+
+  z-index:19;
+
+  filter:
+    drop-shadow(
+      0 20px 30px
+      rgba(0,0,0,.58)
+    );
+}
+
+.owl svg{
+  display:block;
+  width:100%;
+}
+
+/* --------------------------------------------------
+   TAROT CARD
+-------------------------------------------------- */
+
+.oracle-card{
+  position:absolute;
+
+  left:50%;
+  top:20%;
+
+  transform:
+    translateX(-50%)
+    rotate(-1deg);
+
+  width:
+    clamp(75px,20vw,118px);
+
+  aspect-ratio:.625;
+
+  z-index:24;
+
+  border-radius:10px;
+
+  overflow:hidden;
+
+  border:
+    1px solid
+    rgba(246,220,147,.78);
+
+  background:
+
+    radial-gradient(
+      circle at 50% 45%,
+      rgba(224,190,99,.13),
+      transparent 18%
+    ),
+
+    linear-gradient(
+      140deg,
+      #123452,
+      #071729 58%,
+      #102d49
+    );
+
+  box-shadow:
+    0 0 8px
+    rgba(255,231,160,.15),
+
+    0 0 26px
+    rgba(221,189,101,.2),
+
+    0 18px 34px
+    rgba(0,0,0,.52);
+}
+
+.oracle-card::before{
+  content:"";
+
+  position:absolute;
+  inset:7px;
+
+  border-radius:7px;
+
+  border:
+    1px solid
+    rgba(229,201,126,.63);
+}
+
+.card-art{
+  position:absolute;
+  inset:15px;
+
+  display:grid;
+  place-items:center;
+}
+
+.card-circle{
+  position:absolute;
+
+  width:66%;
+  aspect-ratio:1;
+
+  border-radius:50%;
+
+  border:
+    1px solid
+    rgba(234,205,127,.54);
+}
+
+.card-circle::before,
+.card-circle::after{
+  content:"";
+
+  position:absolute;
+
+  left:50%;
+  top:50%;
+
+  transform:
+    translate(-50%,-50%);
+
+  border-radius:50%;
+
+  border:
+    1px solid
+    rgba(234,205,127,.24);
+}
+
+.card-circle::before{
+  width:72%;
+  height:72%;
+}
+
+.card-circle::after{
+  width:135%;
+  height:35%;
+}
+
+.card-star{
+  position:relative;
+
+  font-family:Georgia,serif;
+
+  font-size:
+    clamp(28px,8vw,52px);
+
+  color:#efd582;
+
+  text-shadow:
+    0 0 14px
+    rgba(247,226,156,.53);
+}
+
+.card-moon{
+  position:absolute;
+
+  left:50%;
+
+  transform:
+    translateX(-50%);
+
+  color:
+    rgba(238,213,142,.72);
+
+  font-size:15px;
+}
+
+.card-moon.top{
+  top:5%;
+}
+
+.card-moon.bottom{
+  bottom:5%;
+  transform:
+    translateX(-50%)
+    rotate(180deg);
+}
+
+/* --------------------------------------------------
+   LIGHT CONNECTION
+-------------------------------------------------- */
+
+.light-column{
+  position:absolute;
+
+  left:50%;
+  top:34%;
+
+  width:2px;
+  height:225px;
+
+  transform:
+    translateX(-50%);
+
+  z-index:12;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(250,228,157,0),
+      rgba(250,228,157,.5),
+      rgba(250,228,157,.06)
+    );
+
+  box-shadow:
+    0 0 16px
+    rgba(245,220,149,.34);
+}
+
+/* --------------------------------------------------
+   CRYSTAL BOARD
+-------------------------------------------------- */
+
+.board-area{
+  position:absolute;
+
+  left:50%;
+  bottom:3%;
+
+  transform:
+    translateX(-50%);
+
+  width:
+    min(94vw,640px);
+
+  aspect-ratio:1.30;
+
+  z-index:13;
+}
+
+/* metal outer rim */
+
+.outer-ring{
+  position:absolute;
+
+  left:50%;
+  top:50%;
+
+  width:87%;
+  aspect-ratio:1;
+
+  transform:
+    translate(-50%,-50%)
+    perspective(780px)
+    rotateX(59deg);
+
+  border-radius:50%;
+
+  border:
+    3px double
+    rgba(223,195,120,.55);
+
+  box-shadow:
+    0 0 0 7px
+    rgba(94,72,41,.14),
+
+    0 0 0 9px
+    rgba(218,186,109,.13),
+
+    0 34px 70px
+    rgba(0,0,0,.72);
+}
+
+/* crystal surface */
+
+.crystal-board{
+  position:absolute;
+
+  left:50%;
+  top:50%;
+
+  width:80%;
+  aspect-ratio:1;
+
+  transform:
+    translate(-50%,-50%)
+    perspective(780px)
+    rotateX(59deg);
+
+  border-radius:50%;
+
+  border:
+    1px solid
+    rgba(229,215,173,.55);
+
+  overflow:hidden;
+
+  background:
+
+    radial-gradient(
+      circle at 50% 51%,
+      rgba(244,226,163,.10)
+      0 4%,
+      transparent 5%
+    ),
+
+    radial-gradient(
+      circle at 37% 62%,
+      rgba(131,89,184,.34),
+      transparent 27%
+    ),
+
+    radial-gradient(
+      circle at 61% 42%,
+      rgba(62,123,189,.32),
+      transparent 30%
+    ),
+
+    radial-gradient(
+      circle at 54% 65%,
+      rgba(55,92,151,.18),
+      transparent 35%
+    ),
+
+    rgba(11,35,57,.56);
+
+  backdrop-filter:
+    blur(5px);
+
+  box-shadow:
+
+    inset 0 0 24px
+    rgba(155,210,242,.13),
+
+    inset 0 0 70px
+    rgba(39,69,118,.23),
+
+    0 0 25px
+    rgba(143,167,218,.07);
+}
+
+/* stars below glass */
+
+.crystal-board::before{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  background-image:
+
+    radial-gradient(circle at 15% 25%, #fff 0 1px, transparent 1.5px),
+    radial-gradient(circle at 28% 70%, #dcd4ff 0 1px, transparent 1.4px),
+    radial-gradient(circle at 41% 33%, #fff1bd 0 1px, transparent 1.5px),
+    radial-gradient(circle at 58% 24%, #fff 0 1px, transparent 1.5px),
+    radial-gradient(circle at 66% 61%, #c8dfff 0 1px, transparent 1.5px),
+    radial-gradient(circle at 81% 42%, #fff1c3 0 1px, transparent 1.5px),
+
+    radial-gradient(circle at 52% 52%, rgba(255,255,255,.9) 0 1px, transparent 2px);
+
+  opacity:.78;
+}
+
+/* glass reflection */
+
+.crystal-board::after{
+  content:"";
+
+  position:absolute;
+
+  left:-10%;
+  top:13%;
+
+  width:70%;
+  height:22%;
+
+  transform:
+    rotate(-17deg);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.12),
+      transparent
+    );
+
+  filter:
+    blur(8px);
+
+  opacity:.65;
+}
+
+/* --------------------------------------------------
+   STAR CHART
+-------------------------------------------------- */
+
+.star-chart{
+  position:absolute;
+
+  left:50%;
+  top:49%;
+
+  width:65%;
+  aspect-ratio:1;
+
+  transform:
+    translate(-50%,-50%)
+    perspective(780px)
+    rotateX(59deg);
+
+  z-index:17;
+}
+
+.star-chart svg{
+  width:100%;
+  height:100%;
+  overflow:visible;
+}
+
+.chart-line{
+  fill:none;
+
+  stroke:
+    rgba(224,195,116,.38);
+
+  stroke-width:.7;
+}
+
+.chart-soft{
+  fill:none;
+
+  stroke:
+    rgba(180,191,221,.20);
+
+  stroke-width:.7;
+}
+
+.chart-cross{
+  stroke:
+    rgba(224,195,116,.22);
+
+  stroke-width:.6;
+}
+
+.single-point{
+  fill:#f8dfa0;
+
+  filter:
+    drop-shadow(
+      0 0 7px
+      rgba(248,222,151,.75)
+    );
+}
+
+/* --------------------------------------------------
+   STAR CORE
+-------------------------------------------------- */
+
+.star-core{
+  position:absolute;
+
+  left:50%;
+  top:52%;
+
+  transform:
+    translate(-50%,-50%);
+
+  width:
+    clamp(54px,14vw,88px);
+
+  aspect-ratio:1;
+
+  z-index:23;
+
+  border-radius:50%;
+
+  background:
+
+    radial-gradient(
+      circle at 36% 30%,
+      #fffdf0 0 4%,
+      #f7e4a7 7%,
+      #bca7e0 22%,
+      #617dba 39%,
+      #23405e 58%,
+      #08131f 73%
+    );
+
+  border:
+    1px solid
+    rgba(247,225,157,.83);
+
+  box-shadow:
+
+    inset 0 0 17px
+    rgba(255,255,255,.21),
+
+    0 0 11px
+    rgba(244,219,146,.51),
+
+    0 0 36px
+    rgba(128,113,196,.43),
+
+    0 0 60px
+    rgba(65,117,173,.17);
+}
+
+.star-core::before{
+  content:"";
+
+  position:absolute;
+
+  inset:16%;
+
+  border-radius:50%;
+
+  border:
+    1px solid
+    rgba(255,245,204,.34);
+}
+
+.star-core::after{
+  content:"✦";
+
+  position:absolute;
+  inset:0;
+
+  display:grid;
+  place-items:center;
+
+  color:#fff2bc;
+
+  font-size:25px;
+
+  text-shadow:
+    0 0 14px
+    #ffe7a2;
+}
+
+/* --------------------------------------------------
+   CRYSTALS AROUND BOARD
+-------------------------------------------------- */
+
+.crystal{
+  position:absolute;
+
+  width:18px;
+  height:55px;
+
+  z-index:22;
+
+  opacity:.87;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(180,210,235,.25),
+      rgba(255,255,255,.84),
+      rgba(139,155,223,.25)
+    );
+
+  clip-path:
+    polygon(
+      50% 0,
+      90% 26%,
+      78% 100%,
+      22% 100%,
+      10% 26%
+    );
+
+  filter:
+    drop-shadow(
+      0 0 9px
+      rgba(212,228,255,.4)
+    );
+}
+
+.c1{
+  left:12%;
+  bottom:17%;
+}
+
+.c2{
+  right:12%;
+  bottom:17%;
+}
+
+.c3{
+  left:23%;
+  top:28%;
+  transform:scale(.68);
+}
+
+.c4{
+  right:23%;
+  top:28%;
+  transform:scale(.68);
+}
+
+/* --------------------------------------------------
+   MIST
+-------------------------------------------------- */
+
+.mist{
+  position:absolute;
+
+  left:4%;
+  right:4%;
+  bottom:13%;
+
+  height:150px;
+
+  z-index:20;
+
+  pointer-events:none;
+
   opacity:.62;
 }
-.stars:before{transform:translate(6%,17%) scale(.83);opacity:.4}
-.stars:after{transform:translate(-8%,32%) scale(.7);opacity:.32}
-.arch{
-  position:absolute;left:50%;top:10%;transform:translateX(-50%);
-  width:min(78vw,660px);height:62vh;max-height:760px;border:1px solid rgba(216,187,114,.2);
-  border-bottom:0;border-radius:50% 50% 0 0 / 30% 30% 0 0;
-  box-shadow:inset 0 0 80px rgba(103,127,185,.07),0 0 70px rgba(0,0,0,.45);
-  z-index:-2;
+
+.mist::before,
+.mist::after{
+  content:"";
+
+  position:absolute;
+
+  border-radius:50%;
+
+  filter:
+    blur(25px);
 }
-.arch:before,.arch:after{
-  content:"";position:absolute;top:0;bottom:0;width:18%;border:1px solid rgba(216,187,114,.10);border-bottom:0;
-}
-.arch:before{left:7%;border-radius:70% 0 0 0}
-.arch:after{right:7%;border-radius:0 70% 0 0}
-.header{
-  position:relative;z-index:5;text-align:center;padding:calc(env(safe-area-inset-top) + 18px) 18px 0;
-}
-.back{position:absolute;left:16px;top:calc(env(safe-area-inset-top) + 18px);width:44px;height:44px;border-radius:50%;border:1px solid rgba(216,187,114,.25);background:rgba(5,12,21,.36);color:var(--ivory);display:grid;place-items:center;text-decoration:none;font-size:22px}
-.brand{font-family:Georgia,"Times New Roman",serif;letter-spacing:.2em;font-size:12px;color:var(--gold2)}
-.title{font-family:Georgia,"Yu Mincho",serif;font-size:clamp(26px,7vw,38px);font-weight:500;margin:10px 0 3px;color:#fff5d6;text-shadow:0 0 28px rgba(216,187,114,.12)}
-.sub{font-family:Georgia,serif;letter-spacing:.28em;font-size:11px;color:#bea76d}
-.prompt{margin:14px auto 0;max-width:520px;color:#d8deea;font-size:13px;line-height:1.8}
-.room{
-  position:relative;z-index:2;max-width:760px;margin:0 auto;padding:24px 14px 34px;
-  min-height:690px;
-}
-.owl{
-  position:absolute;left:clamp(4px,5vw,44px);top:24%;width:clamp(100px,28vw,178px);aspect-ratio:.82;
-  filter:drop-shadow(0 14px 24px rgba(0,0,0,.48));
-  z-index:4;
-}
-.owl svg{width:100%;height:100%;display:block}
-.card{
-  position:absolute;left:50%;top:18%;transform:translateX(-50%);
-  width:clamp(74px,20vw,116px);aspect-ratio:.62;border-radius:10px;
+
+.mist::before{
+  left:0;
+  right:42%;
+  top:24%;
+  bottom:5%;
+
   background:
-    radial-gradient(circle at 50% 50%,rgba(255,241,182,.13),transparent 20%),
-    linear-gradient(145deg,#0b2440,#081729 58%,#0a2038);
-  border:1px solid rgba(244,222,154,.75);
-  box-shadow:0 0 22px rgba(216,187,114,.15),0 18px 32px rgba(0,0,0,.42);
-  z-index:5;
+    radial-gradient(
+      ellipse,
+      rgba(172,190,225,.15),
+      rgba(129,146,200,.05) 50%,
+      transparent 70%
+    );
 }
-.card:before{
-  content:"";position:absolute;inset:8px;border:1px solid rgba(216,187,114,.52);border-radius:7px;
+
+.mist::after{
+  left:38%;
+  right:0;
+  top:2%;
+  bottom:26%;
+
   background:
-    linear-gradient(30deg,transparent 48%,rgba(216,187,114,.25) 49% 51%,transparent 52%),
-    linear-gradient(-30deg,transparent 48%,rgba(216,187,114,.20) 49% 51%,transparent 52%);
+    radial-gradient(
+      ellipse,
+      rgba(164,131,203,.14),
+      rgba(105,126,180,.05) 55%,
+      transparent 72%
+    );
 }
-.card:after{
-  content:"✦";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-  font-size:clamp(30px,8vw,48px);color:#e7cc82;text-shadow:0 0 18px rgba(239,217,150,.48)
+
+/* --------------------------------------------------
+   AMBIENT PARTICLES — STATIC FOR STAGE 2
+-------------------------------------------------- */
+
+.spark{
+  position:absolute;
+
+  width:3px;
+  height:3px;
+
+  border-radius:50%;
+
+  background:#fff2bc;
+
+  box-shadow:
+    0 0 7px
+    rgba(252,231,163,.75);
+
+  z-index:21;
 }
-.beam{
-  position:absolute;left:50%;top:33%;transform:translateX(-50%);
-  width:2px;height:210px;z-index:2;
-  background:linear-gradient(180deg,rgba(250,227,159,0),rgba(250,227,159,.65),rgba(250,227,159,.04));
-  box-shadow:0 0 14px rgba(230,210,158,.25);
+
+.s1{left:38%;top:42%}
+.s2{left:57%;top:38%;transform:scale(.7)}
+.s3{left:65%;top:51%;transform:scale(.5)}
+.s4{left:34%;top:59%;transform:scale(.6)}
+.s5{left:53%;top:48%;transform:scale(.45)}
+
+/* --------------------------------------------------
+   UI BOTTOM
+-------------------------------------------------- */
+
+.bottom-ui{
+  position:absolute;
+
+  left:50%;
+  bottom:
+    max(
+      18px,
+      env(safe-area-inset-bottom)
+    );
+
+  transform:
+    translateX(-50%);
+
+  width:
+    min(86vw,450px);
+
+  z-index:50;
+
+  text-align:center;
 }
-.board-wrap{
-  position:absolute;left:50%;bottom:7%;transform:translateX(-50%);
-  width:min(92vw,610px);aspect-ratio:1.45;z-index:3;
+
+.small-caption{
+  margin-bottom:9px;
+
+  font-size:10px;
+
+  letter-spacing:.04em;
+
+  color:
+    rgba(213,221,232,.73);
 }
-.board{
-  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) perspective(680px) rotateX(58deg);
-  width:82%;aspect-ratio:1;border-radius:50%;
+
+.main-button{
+  width:100%;
+
+  height:52px;
+
+  border-radius:999px;
+
+  border:
+    1px solid
+    rgba(224,194,117,.59);
+
+  color:#fff6d7;
+
   background:
-    radial-gradient(circle at 50% 49%,rgba(254,239,186,.12) 0 4%,transparent 5% 10%,rgba(139,146,213,.10) 11% 11.8%,transparent 12% 25%,rgba(216,187,114,.12) 25.5% 26%,transparent 26.5% 44%,rgba(134,148,201,.10) 44.5% 45%,transparent 46%),
-    radial-gradient(circle at 38% 60%,rgba(130,96,190,.26),transparent 23%),
-    radial-gradient(circle at 62% 42%,rgba(66,123,181,.24),transparent 27%),
-    rgba(13,35,56,.60);
-  border:2px solid rgba(227,205,138,.55);
-  box-shadow:inset 0 0 34px rgba(124,176,213,.12),0 0 0 9px rgba(85,112,139,.08),0 28px 65px rgba(0,0,0,.62);
-  backdrop-filter:blur(4px);
+    linear-gradient(
+      180deg,
+      rgba(28,48,70,.91),
+      rgba(10,24,39,.95)
+    );
+
+  box-shadow:
+
+    inset 0 0 22px
+    rgba(232,205,133,.05),
+
+    0 9px 28px
+    rgba(0,0,0,.42);
+
+  letter-spacing:.09em;
+
+  font-size:15px;
 }
-.board:before{
-  content:"";position:absolute;inset:7%;border-radius:50%;border:1px solid rgba(216,187,114,.24);
+
+.main-button small{
+  display:block;
+
+  margin-top:2px;
+
+  font-size:8px;
+
+  color:#a99b75;
+
+  letter-spacing:.09em;
+}
+
+/* --------------------------------------------------
+   STAGE LABEL
+-------------------------------------------------- */
+
+.stage-label{
+  position:absolute;
+
+  right:10px;
+  top:10px;
+
+  z-index:55;
+
+  padding:
+    5px 8px;
+
+  border-radius:999px;
+
+  border:
+    1px solid
+    rgba(215,184,107,.18);
+
   background:
-    linear-gradient(90deg,transparent 49.7%,rgba(216,187,114,.18) 50%,transparent 50.3%),
-    linear-gradient(0deg,transparent 49.7%,rgba(216,187,114,.18) 50%,transparent 50.3%);
+    rgba(2,9,17,.43);
+
+  font-size:9px;
+
+  color:#aa9b74;
 }
-.board:after{
-  content:"";position:absolute;inset:19%;border-radius:50%;border:1px solid rgba(216,187,114,.14);
+
+/* --------------------------------------------------
+   RESPONSIVE
+-------------------------------------------------- */
+
+@media(max-width:500px){
+
+  .room{
+    min-height:
+      660px;
+  }
+
+  .owl{
+    top:30%;
+  }
+
+  .oracle-card{
+    top:20%;
+  }
+
+  .board-area{
+    bottom:7%;
+  }
+
+  .prompt{
+    padding:
+      0 34px;
+  }
+
 }
-.core{
-  position:absolute;left:50%;top:50%;transform:translate(-50%,-38%);
-  width:clamp(54px,15vw,86px);aspect-ratio:1;border-radius:50%;z-index:7;
-  background:
-    radial-gradient(circle at 36% 30%,#fffce9 0 4%,#eed98b 7%,#a98fd3 29%,#284966 54%,#081522 72%);
-  border:1px solid rgba(251,230,161,.8);
-  box-shadow:0 0 11px rgba(236,214,145,.45),0 0 34px rgba(123,121,196,.34);
-}
-.core:before{content:"";position:absolute;inset:20%;border-radius:50%;border:1px solid rgba(255,245,202,.38)}
-.core:after{content:"✦";position:absolute;inset:0;display:grid;place-items:center;color:#fff4c7;font-size:24px;text-shadow:0 0 14px #fff1af}
-.orbit{
-  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-  width:48%;aspect-ratio:1;border-radius:50%;border:1px solid rgba(216,187,114,.25);z-index:4;
-}
-.orbit:before,.orbit:after{content:"";position:absolute;left:50%;top:50%;border-radius:50%;border:1px solid rgba(216,187,114,.15);transform:translate(-50%,-50%)}
-.orbit:before{width:135%;height:62%;transform:translate(-50%,-50%) rotate(24deg)}
-.orbit:after{width:118%;height:70%;transform:translate(-50%,-50%) rotate(-31deg)}
-.single-star{
-  position:absolute;left:50%;top:29%;transform:translateX(-50%);z-index:6;
-  width:10px;height:10px;border-radius:50%;background:#f4df9b;
-  box-shadow:0 0 8px #f4df9b,0 0 24px rgba(244,223,155,.65);
-}
-.mist{position:absolute;left:7%;right:7%;bottom:19%;height:120px;z-index:5;pointer-events:none;opacity:.65}
-.mist:before,.mist:after{content:"";position:absolute;border-radius:50%;filter:blur(18px)}
-.mist:before{left:5%;right:36%;top:18%;bottom:4%;background:rgba(172,184,224,.12)}
-.mist:after{left:42%;right:2%;top:2%;bottom:18%;background:rgba(151,127,199,.12)}
-.ui{
-  position:absolute;left:50%;bottom:max(18px,env(safe-area-inset-bottom));transform:translateX(-50%);
-  z-index:10;width:min(88vw,460px);text-align:center;
-}
-.hint{font-size:12px;color:#c7d0de;line-height:1.7;margin-bottom:10px;text-shadow:0 1px 4px #000}
-.cta{
-  width:100%;height:50px;border-radius:999px;border:1px solid rgba(216,187,114,.55);
-  color:#fff5d8;background:linear-gradient(180deg,rgba(37,49,70,.78),rgba(15,28,43,.88));
-  box-shadow:inset 0 0 18px rgba(216,187,114,.05),0 8px 26px rgba(0,0,0,.28);
-  letter-spacing:.08em;
-}
-.cta small{display:block;font-size:9px;color:#b9af90;margin-top:2px;letter-spacing:.05em}
-.stage-badge{position:absolute;right:12px;top:12px;z-index:8;border:1px solid rgba(216,187,114,.25);border-radius:999px;padding:6px 9px;color:#c9b887;background:rgba(4,11,20,.52);font-size:10px}
-@media(max-width:430px){
-  .room{min-height:650px;padding-left:4px;padding-right:4px}
-  .owl{top:28%}
-  .card{top:19%}
-  .board-wrap{bottom:10%}
-  .prompt{font-size:12px;padding:0 30px}
+
+@media(min-width:760px){
+
+  .room{
+    min-height:760px;
+  }
+
 }
 </style>
 </head>
-<body>
-<main class="scene">
-  <div class="stars" aria-hidden="true"></div>
-  <div class="arch" aria-hidden="true"></div>
-  <div class="stage-badge">STAGE 1 • STATIC</div>
 
+<body>
+
+<main class="astral-scene">
+
+  <!-- stars -->
+  <div class="starfield"></div>
+
+  <!-- architectural background -->
+  <div class="library">
+    <div class="shelf left"></div>
+    <div class="shelf right"></div>
+
+    <div class="pillar p1"></div>
+    <div class="pillar p2"></div>
+
+    <div class="main-window"></div>
+  </div>
+
+  <div class="stage-label">
+    VISUAL PROTOTYPE • STAGE 2
+  </div>
+
+
+  <!-- HEADER -->
   <header class="header">
-    <a class="back" href="index.html" aria-label="戻る">‹</a>
-    <div class="brand">ASTRAL LIBRARY</div>
-    <h1 class="title">ワンオラクル</h1>
-    <div class="sub">ONE ORACLE</div>
-    <p class="prompt">問いを心に思い浮かべてください。<br>星の書庫が静かに、ひとつの記録をひらきます。</p>
+
+    <a
+      class="back-button"
+      href="index.html"
+      aria-label="戻る"
+    >
+      ‹
+    </a>
+
+    <div class="brand-star">
+      ✦
+    </div>
+
+    <div class="brand">
+      ASTRAL LIBRARY
+    </div>
+
+    <h1 class="title">
+      ワンオラクル
+    </h1>
+
+    <div class="subtitle">
+      ONE ORACLE
+    </div>
+
+    <div class="divider">
+      <span>✧</span>
+    </div>
+
+    <p class="prompt">
+      問いを心に思い浮かべてください。<br>
+      星の書庫が静かに、
+      ひとつの記録をひらきます。
+    </p>
+
   </header>
 
-  <section class="room" aria-label="ワンオラクル 占いの間">
-    <div class="owl" aria-label="星のフクロウ精霊">
-      <svg viewBox="0 0 180 220" role="img" aria-label="星のフクロウ精霊">
+
+  <!-- MAIN ROOM -->
+  <section
+    class="room"
+    aria-label="ワンオラクル 占いの間"
+  >
+
+    <!-- OWL -->
+    <div class="owl">
+
+      <svg
+        viewBox="0 0 230 300"
+        role="img"
+        aria-label="星のフクロウ精霊"
+      >
+
         <defs>
-          <radialGradient id="eye" cx="45%" cy="35%">
-            <stop offset="0" stop-color="#fff9db"/>
-            <stop offset=".12" stop-color="#8ab5e8"/>
-            <stop offset=".48" stop-color="#345c95"/>
-            <stop offset="1" stop-color="#07111f"/>
+
+          <radialGradient
+            id="owlEye"
+            cx="37%"
+            cy="30%"
+          >
+            <stop
+              offset="0"
+              stop-color="#ffffff"
+            />
+
+            <stop
+              offset=".08"
+              stop-color="#c9e4ff"
+            />
+
+            <stop
+              offset=".28"
+              stop-color="#608fc5"
+            />
+
+            <stop
+              offset=".57"
+              stop-color="#284a84"
+            />
+
+            <stop
+              offset="1"
+              stop-color="#030916"
+            />
+
           </radialGradient>
-          <linearGradient id="feather" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#f4efe4"/>
-            <stop offset=".55" stop-color="#cfd5db"/>
-            <stop offset="1" stop-color="#7287a0"/>
+
+
+          <linearGradient
+            id="owlWhite"
+            x1="0"
+            y1="0"
+            x2="1"
+            y2="1"
+          >
+            <stop
+              offset="0"
+              stop-color="#fffdf5"
+            />
+
+            <stop
+              offset=".55"
+              stop-color="#e5e3dc"
+            />
+
+            <stop
+              offset="1"
+              stop-color="#a5b1bf"
+            />
+
           </linearGradient>
+
+
+          <linearGradient
+            id="owlNavy"
+            x1="0"
+            y1="0"
+            x2="1"
+            y2="1"
+          >
+            <stop
+              offset="0"
+              stop-color="#1c4265"
+            />
+
+            <stop
+              offset=".55"
+              stop-color="#0d223b"
+            />
+
+            <stop
+              offset="1"
+              stop-color="#071321"
+            />
+
+          </linearGradient>
+
         </defs>
-        <path d="M31 81C20 48 40 23 68 29L90 8l22 21c28-6 48 19 37 52 18 20 18 61 5 91-14 31-38 45-64 45s-50-14-64-45c-13-30-13-71 5-91Z" fill="#10243a" stroke="#d7bd77" stroke-opacity=".6"/>
-        <path d="M48 78c4-31 21-45 42-45s38 14 42 45c-9 27-22 43-42 43S57 105 48 78Z" fill="url(#feather)"/>
-        <ellipse cx="68" cy="77" rx="22" ry="25" fill="#e9e5db"/>
-        <ellipse cx="112" cy="77" rx="22" ry="25" fill="#e9e5db"/>
-        <circle cx="68" cy="78" r="15" fill="url(#eye)" stroke="#d7bd77"/>
-        <circle cx="112" cy="78" r="15" fill="url(#eye)" stroke="#d7bd77"/>
-        <circle cx="64" cy="73" r="2.8" fill="#fff"/>
-        <circle cx="108" cy="73" r="2.8" fill="#fff"/>
-        <path d="M90 87l-8 7 8 5 8-5-8-7Z" fill="#c8a962"/>
-        <path d="M53 40 90 19l37 21" fill="none" stroke="#d7bd77" stroke-width="2"/>
-        <circle cx="90" cy="20" r="8" fill="#0f2741" stroke="#d7bd77"/>
-        <path d="m90 14 2 4 5 1-4 3 1 5-4-2-4 2 1-5-4-3 5-1 2-4Z" fill="#f0dc99"/>
-        <path d="M40 130c16 14 29 17 50 17s34-3 50-17l-10 70H50l-10-70Z" fill="#0c2036" stroke="#d7bd77" stroke-opacity=".5"/>
-        <path d="m64 146 9 15 17-24 17 24 9-15" fill="none" stroke="#d7bd77" stroke-opacity=".75"/>
-        <circle cx="90" cy="166" r="8" fill="#243a63" stroke="#d7bd77"/>
-        <path d="m90 160 2 4 4 2-4 2-2 4-2-4-4-2 4-2 2-4Z" fill="#f0dc99"/>
+
+
+        <!-- cloak silhouette -->
+
+        <path
+          d="
+          M48 111
+          C18 143 17 214 40 263
+          C56 292 174 292 190 263
+          C213 214 212 143 182 111
+          C173 93 154 87 141 89
+          C130 79 123 71 115 58
+          C107 71 100 79 89 89
+          C76 87 57 93 48 111Z
+          "
+          fill="url(#owlNavy)"
+          stroke="#c9ab61"
+          stroke-opacity=".55"
+        />
+
+
+        <!-- head -->
+
+        <path
+          d="
+          M54 103
+          C39 59 61 31 92 38
+          L115 13
+          L138 38
+          C169 31 191 59 176 103
+          C165 137 142 156 115 156
+          C88 156 65 137 54 103Z
+          "
+          fill="url(#owlWhite)"
+        />
+
+
+        <!-- facial discs -->
+
+        <ellipse
+          cx="88"
+          cy="94"
+          rx="37"
+          ry="42"
+          fill="#fffaf0"
+          opacity=".91"
+        />
+
+        <ellipse
+          cx="142"
+          cy="94"
+          rx="37"
+          ry="42"
+          fill="#fffaf0"
+          opacity=".91"
+        />
+
+
+        <!-- eyes -->
+
+        <circle
+          cx="88"
+          cy="96"
+          r="24"
+          fill="url(#owlEye)"
+          stroke="#d6b765"
+          stroke-width="2"
+        />
+
+        <circle
+          cx="142"
+          cy="96"
+          r="24"
+          fill="url(#owlEye)"
+          stroke="#d6b765"
+          stroke-width="2"
+        />
+
+
+        <!-- eye highlights -->
+
+        <circle
+          cx="80"
+          cy="87"
+          r="4"
+          fill="#ffffff"
+        />
+
+        <circle
+          cx="134"
+          cy="87"
+          r="4"
+          fill="#ffffff"
+        />
+
+        <circle
+          cx="95"
+          cy="104"
+          r="2"
+          fill="#bed7ff"
+        />
+
+        <circle
+          cx="149"
+          cy="104"
+          r="2"
+          fill="#bed7ff"
+        />
+
+
+        <!-- tiny constellation marks -->
+
+        <path
+          d="
+          M79 99 L88 88 L97 102
+          "
+          fill="none"
+          stroke="#9ac4f2"
+          stroke-width=".7"
+          opacity=".7"
+        />
+
+        <path
+          d="
+          M133 99 L142 88 L151 102
+          "
+          fill="none"
+          stroke="#9ac4f2"
+          stroke-width=".7"
+          opacity=".7"
+        />
+
+
+        <!-- beak -->
+
+        <path
+          d="
+          M115 108
+          L105 118
+          L115 126
+          L125 118
+          Z
+          "
+          fill="#c49f53"
+        />
+
+
+        <!-- crown -->
+
+        <path
+          d="
+          M75 52
+          Q115 20 155 52
+          "
+          fill="none"
+          stroke="#d7b86b"
+          stroke-width="2"
+        />
+
+        <circle
+          cx="115"
+          cy="26"
+          r="12"
+          fill="#0c2139"
+          stroke="#d7b86b"
+        />
+
+        <path
+          d="
+          M115 17
+          L118 23
+          L125 26
+          L118 29
+          L115 36
+          L112 29
+          L105 26
+          L112 23
+          Z
+          "
+          fill="#f0d78b"
+        />
+
+
+        <!-- breast -->
+
+        <path
+          d="
+          M78 148
+          Q115 173 152 148
+          L165 245
+          Q115 270 65 245
+          Z
+          "
+          fill="#ece8dd"
+          opacity=".92"
+        />
+
+
+        <!-- cloak wings -->
+
+        <path
+          d="
+          M58 146
+          C34 170 35 232 62 261
+          L83 163
+          Z
+          "
+          fill="#0b2139"
+          stroke="#bda15e"
+          stroke-opacity=".44"
+        />
+
+        <path
+          d="
+          M172 146
+          C196 170 195 232 168 261
+          L147 163
+          Z
+          "
+          fill="#0b2139"
+          stroke="#bda15e"
+          stroke-opacity=".44"
+        />
+
+
+        <!-- gold star patterns -->
+
+        <g
+          fill="#d9bd72"
+          opacity=".85"
+        >
+
+          <circle
+            cx="58"
+            cy="183"
+            r="2"
+          />
+
+          <circle
+            cx="50"
+            cy="209"
+            r="1.6"
+          />
+
+          <circle
+            cx="68"
+            cy="229"
+            r="1.5"
+          />
+
+          <circle
+            cx="172"
+            cy="183"
+            r="2"
+          />
+
+          <circle
+            cx="180"
+            cy="209"
+            r="1.6"
+          />
+
+          <circle
+            cx="162"
+            cy="229"
+            r="1.5"
+          />
+
+        </g>
+
+
+        <!-- crescent -->
+
+        <path
+          d="
+          M53 167
+          A13 13 0 1 0 68 151
+          A10 10 0 1 1 53 167
+          "
+          fill="#d9bd72"
+          opacity=".7"
+        />
+
+
+        <!-- pendant -->
+
+        <line
+          x1="115"
+          y1="154"
+          x2="115"
+          y2="201"
+          stroke="#d7b86b"
+        />
+
+        <circle
+          cx="115"
+          cy="183"
+          r="13"
+          fill="#102d4c"
+          stroke="#d7b86b"
+        />
+
+        <path
+          d="
+          M115 172
+          L118 180
+          L126 183
+          L118 186
+          L115 194
+          L112 186
+          L104 183
+          L112 180
+          Z
+          "
+          fill="#efd98d"
+        />
+
+        <path
+          d="
+          M115 201
+          L108 216
+          L115 227
+          L122 216
+          Z
+          "
+          fill="#8a78c9"
+          stroke="#d5c5f2"
+          stroke-width="1"
+        />
+
       </svg>
+
     </div>
 
-    <div class="card" aria-label="伏せたタロットカード"></div>
-    <div class="beam" aria-hidden="true"></div>
 
-    <div class="board-wrap" aria-label="透明クリスタル盤面">
-      <div class="board"></div>
-      <div class="orbit"></div>
-      <div class="single-star" title="単星の星図"></div>
-      <div class="core" title="星核"></div>
+    <!-- TAROT CARD -->
+    <div
+      class="oracle-card"
+      aria-label="伏せたタロットカード"
+    >
+
+      <div class="card-art">
+
+        <div class="card-moon top">
+          ☾
+        </div>
+
+        <div class="card-circle"></div>
+
+        <div class="card-star">
+          ✦
+        </div>
+
+        <div class="card-moon bottom">
+          ☾
+        </div>
+
+      </div>
+
     </div>
 
-    <div class="mist" aria-hidden="true"></div>
+
+    <!-- light -->
+    <div class="light-column"></div>
+
+
+    <!-- BOARD -->
+    <div class="board-area">
+
+      <div class="outer-ring"></div>
+
+      <div class="crystal-board"></div>
+
+
+      <div class="star-chart">
+
+        <svg
+          viewBox="0 0 400 400"
+          aria-label="単星の星図"
+        >
+
+          <circle
+            cx="200"
+            cy="200"
+            r="160"
+            class="chart-line"
+          />
+
+          <circle
+            cx="200"
+            cy="200"
+            r="118"
+            class="chart-soft"
+          />
+
+          <circle
+            cx="200"
+            cy="200"
+            r="72"
+            class="chart-soft"
+          />
+
+          <line
+            x1="40"
+            y1="200"
+            x2="360"
+            y2="200"
+            class="chart-cross"
+          />
+
+          <line
+            x1="200"
+            y1="40"
+            x2="200"
+            y2="360"
+            class="chart-cross"
+          />
+
+          <line
+            x1="88"
+            y1="88"
+            x2="312"
+            y2="312"
+            class="chart-cross"
+          />
+
+          <line
+            x1="312"
+            y1="88"
+            x2="88"
+            y2="312"
+            class="chart-cross"
+          />
+
+          <circle
+            cx="200"
+            cy="118"
+            r="5"
+            class="single-point"
+          />
+
+          <line
+            x1="200"
+            y1="122"
+            x2="200"
+            y2="182"
+            class="chart-line"
+          />
+
+        </svg>
+
+      </div>
+
+
+      <div
+        class="star-core"
+        aria-label="星核"
+      ></div>
+
+
+      <!-- crystal pillars -->
+
+      <div class="crystal c1"></div>
+      <div class="crystal c2"></div>
+      <div class="crystal c3"></div>
+      <div class="crystal c4"></div>
+
+    </div>
+
+
+    <!-- mist -->
+
+    <div class="mist"></div>
+
+
+    <!-- particles -->
+
+    <div class="spark s1"></div>
+    <div class="spark s2"></div>
+    <div class="spark s3"></div>
+    <div class="spark s4"></div>
+    <div class="spark s5"></div>
+
+
   </section>
 
-  <div class="ui">
-    <div class="hint">第一段階：画面構成・距離感・視線誘導の確認用</div>
-    <button class="cta" type="button" disabled aria-disabled="true">
+
+  <!-- BOTTOM UI -->
+
+  <div class="bottom-ui">
+
+    <div class="small-caption">
+      静かに問いを心へ置いてください
+    </div>
+
+    <button
+      class="main-button"
+      type="button"
+      disabled
+      aria-disabled="true"
+    >
+
       カードを混ぜる
-      <small>SHUFFLE — 第2段階で実装</small>
+
+      <small>
+        SHUFFLE — NEXT STAGE
+      </small>
+
     </button>
+
   </div>
+
+
 </main>
+
 </body>
 </html>
