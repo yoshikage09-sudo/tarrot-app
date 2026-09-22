@@ -1,0 +1,62 @@
+/* Luminous comparison edition: bounded CSS particles, no canvas or new dependencies. */
+.scene{background:radial-gradient(ellipse at 50% 30%,#29325455,transparent 48%),radial-gradient(ellipse at 50% 70%,#58437533,transparent 42%),linear-gradient(#0b1828,#07131f 45%,#030812)}
+.room{isolation:isolate}
+.library,.owl,.stars{transition:opacity 1s}
+.ritual-light{position:absolute;inset:0;pointer-events:none;z-index:22;overflow:hidden}
+.aurora{position:absolute;left:50%;top:49%;width:360px;height:360px;margin:-180px;border-radius:50%;background:radial-gradient(ellipse,#ffe6aa25,transparent 32%),conic-gradient(from 45deg,transparent,#a893db25,transparent,#69a7c329,transparent,#e9c67920,transparent);opacity:.26;transform:scale(.8);transition:opacity 1s,transform 1.6s}
+.aurora{mask-image:radial-gradient(circle,#000 15%,#0008 42%,transparent 70%)}
+.halo{position:absolute;left:50%;top:49%;border-radius:50%;opacity:0;transform:translate(-50%,-50%) scale(.6);border:1px solid #edd29aaa;box-shadow:0 0 15px #f4d08922,inset 0 0 12px #f4d08911}
+.halo-one{width:225px;height:225px;border-style:dashed}
+.halo-two{width:265px;height:265px;border-color:#b8cde055}
+.halo-three{width:310px;height:310px;border-style:dotted}
+.rays{position:absolute;left:50%;top:49%;width:360px;height:360px;margin:-180px;background:repeating-conic-gradient(from 12deg,transparent 0deg 14deg,#ffefb522 15deg,transparent 16deg 30deg);border-radius:50%;mask-image:radial-gradient(circle,transparent 18%,#000 36%,transparent 70%);opacity:0}
+.stardust{position:absolute;left:50%;top:49%;width:1px;height:1px}
+.stardust i{position:absolute;width:var(--size);height:var(--size);background:#fff0c1;border-radius:50%;box-shadow:0 0 7px #ffe6a7;opacity:0}
+.gold-thread{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:29;opacity:0;transition:opacity .25s}
+.gold-thread path{fill:none;stroke:url(#threadGold);stroke-width:1.5;stroke-dasharray:4 5}
+.gold-thread circle{fill:#fff1bd}
+.attuned .gold-thread path{animation:threadFlow 1.6s linear infinite}
+@keyframes threadFlow{to{stroke-dashoffset:-36}}
+.deck{perspective:650px}
+.deck i{box-shadow:0 0 0 2px #17253b,0 0 0 3px #dab97433,0 12px 25px #0008}
+.deck.shuffling i:nth-child(2){animation:richShuffle .54s cubic-bezier(.4,0,.2,1) 3}
+.deck.shuffling i:nth-child(3){animation:richShuffle .54s cubic-bezier(.4,0,.2,1) .04s 3}
+@keyframes richShuffle{0%,100%{transform:translate(4px,-4px) rotateZ(0) rotateY(0);box-shadow:0 8px 15px #0006}38%{transform:translate(46px,-50px) rotateZ(13deg) rotateY(-23deg);box-shadow:-12px 15px 0 -9px #eed69a88,-23px 28px 0 -17px #eed69a33,0 0 23px #dec17633}72%{transform:translate(-8px,13px) rotateZ(-5deg) rotateY(9deg);box-shadow:0 0 28px #dec17655}}
+[data-ritual=shuffle] .aurora{opacity:.6;transform:scale(1.05)}
+[data-ritual=unlock] .aurora{opacity:.85;transform:scale(1.2)}
+[data-ritual=unlock] .halo{animation:unlockHalo 1.3s ease-out both}
+[data-ritual=unlock] .halo-two{animation-delay:.15s}
+[data-ritual=unlock] .halo-three{animation-delay:.3s}
+@keyframes unlockHalo{0%{opacity:0;transform:translate(-50%,-50%) scale(.5) rotate(-25deg)}45%{opacity:.7}100%{opacity:0;transform:translate(-50%,-50%) scale(1.15) rotate(15deg)}}
+.scene.unlocked .diagram{opacity:.95}
+.scene.dealing .orbit-card{animation:goldDeal .7s cubic-bezier(.16,.7,.3,1) both;animation-delay:var(--delay)}
+.scene.dealing .orbit-card:disabled{opacity:1}
+@keyframes goldDeal{0%{opacity:0;transform:translate(var(--launch-x),var(--launch-y)) scale(.6) rotate(-24deg)}30%{opacity:1;box-shadow:0 0 19px #ffe6a744}100%{opacity:1;transform:rotate(var(--r))}}
+.orbit-card{transition:transform .35s cubic-bezier(.2,.8,.3,1),opacity .6s,border-color .3s}
+.orbit-card[aria-pressed=true]{transform:translateY(-22px) scale(1.08);background:radial-gradient(ellipse at 50% 0,#6d6081,#102b46 70%);box-shadow:0 0 0 1px #ffefb944,0 0 22px #dec17688,0 10px 22px #0008}
+.orbit-card[aria-pressed=true]::after{content:'';position:absolute;inset:-3px;border:1px solid #fff0b5;border-radius:8px;animation:chosenRing 1.6s ease-out infinite;pointer-events:none}
+@keyframes chosenRing{from{opacity:.8;transform:scale(1)}to{opacity:0;transform:scale(1.2)}}
+.scene.attuned .core-halo{opacity:.85;transition:opacity .4s}
+[data-ritual=gather] .library,[data-ritual=hush] .library,[data-ritual=opening] .library{opacity:.28}
+[data-ritual=gather] .owl,[data-ritual=hush] .owl,[data-ritual=opening] .owl{opacity:.35}
+[data-ritual=gather] .aurora{opacity:.8;transform:scale(.75)}
+[data-ritual=hush] .aurora{opacity:1;transform:scale(.45)}
+[data-ritual=hush] .reveal-card{filter:drop-shadow(0 0 16px #f0d58a77)}
+.reveal-card{width:96px;height:154px;margin-left:-48px;top:30%}
+.card-front{background:radial-gradient(ellipse at 30% 0,#fff4cd,#dec38a 55%,#af894d);box-shadow:0 0 0 3px #d5af6633,0 0 38px #dec17633}
+.card-front::before{content:'';position:absolute;inset:6px;border:1px solid #785d3299;border-radius:3px;pointer-events:none}
+.card-front .emblem{border:1px solid #8d723c77;width:49px;height:49px;border-radius:50%;display:grid;place-items:center}
+[data-ritual=opening] .halo{animation:revealHalo 2.8s cubic-bezier(.16,.7,.3,1) both}
+[data-ritual=opening] .halo-two{animation-delay:.18s}
+[data-ritual=opening] .halo-three{animation-delay:.35s}
+@keyframes revealHalo{0%{opacity:0;transform:translate(-50%,-50%) scale(.3) rotate(-30deg)}20%{opacity:.85}70%{opacity:.45}100%{opacity:.18;transform:translate(-50%,-50%) scale(1) rotate(30deg)}}
+[data-ritual=opening] .aurora{animation:auroraBloom 3.6s ease-out both}
+@keyframes auroraBloom{0%{opacity:.2;transform:scale(.45)}25%{opacity:1;transform:scale(1.15)}100%{opacity:.4;transform:scale(1)}}
+[data-ritual=opening] .rays{animation:raysBloom 3.4s ease-out both}
+@keyframes raysBloom{0%{opacity:0;transform:scale(.5) rotate(-15deg)}25%{opacity:.95}100%{opacity:0;transform:scale(1.25) rotate(15deg)}}
+[data-ritual=opening] .stardust i{animation:dustBloom 2.3s ease-out both;animation-delay:calc(.2s + var(--delay))}
+@keyframes dustBloom{0%{opacity:0;transform:translate(0,0) scale(.4)}18%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.3)}}
+.scene.cleared .mist{transition:opacity 2s,transform 2s;transform:translateY(32px) scale(1.3)}
+[data-ritual=result] .halo{opacity:.18;transform:translate(-50%,-50%) rotate(30deg) scale(1)}
+[data-ritual=result] .aurora{opacity:.4;transform:scale(1)}
+@media(prefers-reduced-motion:reduce){.gold-thread path,.orbit-card[aria-pressed=true]::after{animation:none!important}.ritual-light .stardust,.ritual-light .rays{display:none}.aurora{transition:none!important}.scene[data-ritual=result] .halo{opacity:.15}}
