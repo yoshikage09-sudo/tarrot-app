@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07121f">
+<title>アストラルライブラリー｜ワンオラクル試作 Stage 1</title>
+<style>
+:root{
+  --bg:#07121f;
+  --bg2:#0b1a2b;
+  --navy:#10253d;
+  --gold:#d8bb72;
+  --gold2:#f3dd9a;
+  --ivory:#f8f3e6;
+  --muted:#b9c3d3;
+  --violet:#9281d6;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:"Hiragino Sans","Yu Gothic",system-ui,-apple-system,sans-serif;color:var(--ivory);background:#050b14}
+body{overflow-x:hidden}
+button{font:inherit}
+.scene{
+  position:relative;
+  min-height:100vh;
+  isolation:isolate;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 12%,rgba(137,164,223,.18),transparent 22%),
+    radial-gradient(circle at 50% 63%,rgba(88,102,176,.20),transparent 28%),
+    linear-gradient(180deg,#0b1828 0%,#08131f 48%,#040a12 100%);
+}
+.scene:before{
+  content:"";
+  position:absolute;inset:0;z-index:-3;
+  background:
+    linear-gradient(90deg,rgba(4,10,18,.85),transparent 23%,transparent 77%,rgba(4,10,18,.85)),
+    repeating-linear-gradient(90deg,transparent 0 8.5%,rgba(217,187,114,.03) 8.7% 8.9%,transparent 9.1% 17%);
+}
+.stars,.stars:before,.stars:after{
+  position:absolute;inset:0;content:"";pointer-events:none;
+  background-image:
+    radial-gradient(circle at 16% 18%,#fff 0 1px,transparent 1.4px),
+    radial-gradient(circle at 28% 34%,#fff8d0 0 1px,transparent 1.5px),
+    radial-gradient(circle at 72% 22%,#fff 0 1px,transparent 1.4px),
+    radial-gradient(circle at 82% 41%,#d7d9ff 0 1px,transparent 1.4px),
+    radial-gradient(circle at 45% 15%,#fff 0 1px,transparent 1.2px),
+    radial-gradient(circle at 61% 31%,#ffeab7 0 1px,transparent 1.4px),
+    radial-gradient(circle at 20% 56%,#fff 0 1px,transparent 1.3px),
+    radial-gradient(circle at 77% 59%,#fff 0 1px,transparent 1.2px);
+  opacity:.62;
+}
+.stars:before{transform:translate(6%,17%) scale(.83);opacity:.4}
+.stars:after{transform:translate(-8%,32%) scale(.7);opacity:.32}
+.arch{
+  position:absolute;left:50%;top:10%;transform:translateX(-50%);
+  width:min(78vw,660px);height:62vh;max-height:760px;border:1px solid rgba(216,187,114,.2);
+  border-bottom:0;border-radius:50% 50% 0 0 / 30% 30% 0 0;
+  box-shadow:inset 0 0 80px rgba(103,127,185,.07),0 0 70px rgba(0,0,0,.45);
+  z-index:-2;
+}
+.arch:before,.arch:after{
+  content:"";position:absolute;top:0;bottom:0;width:18%;border:1px solid rgba(216,187,114,.10);border-bottom:0;
+}
+.arch:before{left:7%;border-radius:70% 0 0 0}
+.arch:after{right:7%;border-radius:0 70% 0 0}
+.header{
+  position:relative;z-index:5;text-align:center;padding:calc(env(safe-area-inset-top) + 18px) 18px 0;
+}
+.back{position:absolute;left:16px;top:calc(env(safe-area-inset-top) + 18px);width:44px;height:44px;border-radius:50%;border:1px solid rgba(216,187,114,.25);background:rgba(5,12,21,.36);color:var(--ivory);display:grid;place-items:center;text-decoration:none;font-size:22px}
+.brand{font-family:Georgia,"Times New Roman",serif;letter-spacing:.2em;font-size:12px;color:var(--gold2)}
+.title{font-family:Georgia,"Yu Mincho",serif;font-size:clamp(26px,7vw,38px);font-weight:500;margin:10px 0 3px;color:#fff5d6;text-shadow:0 0 28px rgba(216,187,114,.12)}
+.sub{font-family:Georgia,serif;letter-spacing:.28em;font-size:11px;color:#bea76d}
+.prompt{margin:14px auto 0;max-width:520px;color:#d8deea;font-size:13px;line-height:1.8}
+.room{
+  position:relative;z-index:2;max-width:760px;margin:0 auto;padding:24px 14px 34px;
+  min-height:690px;
+}
+.owl{
+  position:absolute;left:clamp(4px,5vw,44px);top:24%;width:clamp(100px,28vw,178px);aspect-ratio:.82;
+  filter:drop-shadow(0 14px 24px rgba(0,0,0,.48));
+  z-index:4;
+}
+.owl svg{width:100%;height:100%;display:block}
+.card{
+  position:absolute;left:50%;top:18%;transform:translateX(-50%);
+  width:clamp(74px,20vw,116px);aspect-ratio:.62;border-radius:10px;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(255,241,182,.13),transparent 20%),
+    linear-gradient(145deg,#0b2440,#081729 58%,#0a2038);
+  border:1px solid rgba(244,222,154,.75);
+  box-shadow:0 0 22px rgba(216,187,114,.15),0 18px 32px rgba(0,0,0,.42);
+  z-index:5;
+}
+.card:before{
+  content:"";position:absolute;inset:8px;border:1px solid rgba(216,187,114,.52);border-radius:7px;
+  background:
+    linear-gradient(30deg,transparent 48%,rgba(216,187,114,.25) 49% 51%,transparent 52%),
+    linear-gradient(-30deg,transparent 48%,rgba(216,187,114,.20) 49% 51%,transparent 52%);
+}
+.card:after{
+  content:"✦";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  font-size:clamp(30px,8vw,48px);color:#e7cc82;text-shadow:0 0 18px rgba(239,217,150,.48)
+}
+.beam{
+  position:absolute;left:50%;top:33%;transform:translateX(-50%);
+  width:2px;height:210px;z-index:2;
+  background:linear-gradient(180deg,rgba(250,227,159,0),rgba(250,227,159,.65),rgba(250,227,159,.04));
+  box-shadow:0 0 14px rgba(230,210,158,.25);
+}
+.board-wrap{
+  position:absolute;left:50%;bottom:7%;transform:translateX(-50%);
+  width:min(92vw,610px);aspect-ratio:1.45;z-index:3;
+}
+.board{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) perspective(680px) rotateX(58deg);
+  width:82%;aspect-ratio:1;border-radius:50%;
+  background:
+    radial-gradient(circle at 50% 49%,rgba(254,239,186,.12) 0 4%,transparent 5% 10%,rgba(139,146,213,.10) 11% 11.8%,transparent 12% 25%,rgba(216,187,114,.12) 25.5% 26%,transparent 26.5% 44%,rgba(134,148,201,.10) 44.5% 45%,transparent 46%),
+    radial-gradient(circle at 38% 60%,rgba(130,96,190,.26),transparent 23%),
+    radial-gradient(circle at 62% 42%,rgba(66,123,181,.24),transparent 27%),
+    rgba(13,35,56,.60);
+  border:2px solid rgba(227,205,138,.55);
+  box-shadow:inset 0 0 34px rgba(124,176,213,.12),0 0 0 9px rgba(85,112,139,.08),0 28px 65px rgba(0,0,0,.62);
+  backdrop-filter:blur(4px);
+}
+.board:before{
+  content:"";position:absolute;inset:7%;border-radius:50%;border:1px solid rgba(216,187,114,.24);
+  background:
+    linear-gradient(90deg,transparent 49.7%,rgba(216,187,114,.18) 50%,transparent 50.3%),
+    linear-gradient(0deg,transparent 49.7%,rgba(216,187,114,.18) 50%,transparent 50.3%);
+}
+.board:after{
+  content:"";position:absolute;inset:19%;border-radius:50%;border:1px solid rgba(216,187,114,.14);
+}
+.core{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-38%);
+  width:clamp(54px,15vw,86px);aspect-ratio:1;border-radius:50%;z-index:7;
+  background:
+    radial-gradient(circle at 36% 30%,#fffce9 0 4%,#eed98b 7%,#a98fd3 29%,#284966 54%,#081522 72%);
+  border:1px solid rgba(251,230,161,.8);
+  box-shadow:0 0 11px rgba(236,214,145,.45),0 0 34px rgba(123,121,196,.34);
+}
+.core:before{content:"";position:absolute;inset:20%;border-radius:50%;border:1px solid rgba(255,245,202,.38)}
+.core:after{content:"✦";position:absolute;inset:0;display:grid;place-items:center;color:#fff4c7;font-size:24px;text-shadow:0 0 14px #fff1af}
+.orbit{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:48%;aspect-ratio:1;border-radius:50%;border:1px solid rgba(216,187,114,.25);z-index:4;
+}
+.orbit:before,.orbit:after{content:"";position:absolute;left:50%;top:50%;border-radius:50%;border:1px solid rgba(216,187,114,.15);transform:translate(-50%,-50%)}
+.orbit:before{width:135%;height:62%;transform:translate(-50%,-50%) rotate(24deg)}
+.orbit:after{width:118%;height:70%;transform:translate(-50%,-50%) rotate(-31deg)}
+.single-star{
+  position:absolute;left:50%;top:29%;transform:translateX(-50%);z-index:6;
+  width:10px;height:10px;border-radius:50%;background:#f4df9b;
+  box-shadow:0 0 8px #f4df9b,0 0 24px rgba(244,223,155,.65);
+}
+.mist{position:absolute;left:7%;right:7%;bottom:19%;height:120px;z-index:5;pointer-events:none;opacity:.65}
+.mist:before,.mist:after{content:"";position:absolute;border-radius:50%;filter:blur(18px)}
+.mist:before{left:5%;right:36%;top:18%;bottom:4%;background:rgba(172,184,224,.12)}
+.mist:after{left:42%;right:2%;top:2%;bottom:18%;background:rgba(151,127,199,.12)}
+.ui{
+  position:absolute;left:50%;bottom:max(18px,env(safe-area-inset-bottom));transform:translateX(-50%);
+  z-index:10;width:min(88vw,460px);text-align:center;
+}
+.hint{font-size:12px;color:#c7d0de;line-height:1.7;margin-bottom:10px;text-shadow:0 1px 4px #000}
+.cta{
+  width:100%;height:50px;border-radius:999px;border:1px solid rgba(216,187,114,.55);
+  color:#fff5d8;background:linear-gradient(180deg,rgba(37,49,70,.78),rgba(15,28,43,.88));
+  box-shadow:inset 0 0 18px rgba(216,187,114,.05),0 8px 26px rgba(0,0,0,.28);
+  letter-spacing:.08em;
+}
+.cta small{display:block;font-size:9px;color:#b9af90;margin-top:2px;letter-spacing:.05em}
+.stage-badge{position:absolute;right:12px;top:12px;z-index:8;border:1px solid rgba(216,187,114,.25);border-radius:999px;padding:6px 9px;color:#c9b887;background:rgba(4,11,20,.52);font-size:10px}
+@media(max-width:430px){
+  .room{min-height:650px;padding-left:4px;padding-right:4px}
+  .owl{top:28%}
+  .card{top:19%}
+  .board-wrap{bottom:10%}
+  .prompt{font-size:12px;padding:0 30px}
+}
+</style>
+</head>
+<body>
+<main class="scene">
+  <div class="stars" aria-hidden="true"></div>
+  <div class="arch" aria-hidden="true"></div>
+  <div class="stage-badge">STAGE 1 • STATIC</div>
+
+  <header class="header">
+    <a class="back" href="index.html" aria-label="戻る">‹</a>
+    <div class="brand">ASTRAL LIBRARY</div>
+    <h1 class="title">ワンオラクル</h1>
+    <div class="sub">ONE ORACLE</div>
+    <p class="prompt">問いを心に思い浮かべてください。<br>星の書庫が静かに、ひとつの記録をひらきます。</p>
+  </header>
+
+  <section class="room" aria-label="ワンオラクル 占いの間">
+    <div class="owl" aria-label="星のフクロウ精霊">
+      <svg viewBox="0 0 180 220" role="img" aria-label="星のフクロウ精霊">
+        <defs>
+          <radialGradient id="eye" cx="45%" cy="35%">
+            <stop offset="0" stop-color="#fff9db"/>
+            <stop offset=".12" stop-color="#8ab5e8"/>
+            <stop offset=".48" stop-color="#345c95"/>
+            <stop offset="1" stop-color="#07111f"/>
+          </radialGradient>
+          <linearGradient id="feather" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#f4efe4"/>
+            <stop offset=".55" stop-color="#cfd5db"/>
+            <stop offset="1" stop-color="#7287a0"/>
+          </linearGradient>
+        </defs>
+        <path d="M31 81C20 48 40 23 68 29L90 8l22 21c28-6 48 19 37 52 18 20 18 61 5 91-14 31-38 45-64 45s-50-14-64-45c-13-30-13-71 5-91Z" fill="#10243a" stroke="#d7bd77" stroke-opacity=".6"/>
+        <path d="M48 78c4-31 21-45 42-45s38 14 42 45c-9 27-22 43-42 43S57 105 48 78Z" fill="url(#feather)"/>
+        <ellipse cx="68" cy="77" rx="22" ry="25" fill="#e9e5db"/>
+        <ellipse cx="112" cy="77" rx="22" ry="25" fill="#e9e5db"/>
+        <circle cx="68" cy="78" r="15" fill="url(#eye)" stroke="#d7bd77"/>
+        <circle cx="112" cy="78" r="15" fill="url(#eye)" stroke="#d7bd77"/>
+        <circle cx="64" cy="73" r="2.8" fill="#fff"/>
+        <circle cx="108" cy="73" r="2.8" fill="#fff"/>
+        <path d="M90 87l-8 7 8 5 8-5-8-7Z" fill="#c8a962"/>
+        <path d="M53 40 90 19l37 21" fill="none" stroke="#d7bd77" stroke-width="2"/>
+        <circle cx="90" cy="20" r="8" fill="#0f2741" stroke="#d7bd77"/>
+        <path d="m90 14 2 4 5 1-4 3 1 5-4-2-4 2 1-5-4-3 5-1 2-4Z" fill="#f0dc99"/>
+        <path d="M40 130c16 14 29 17 50 17s34-3 50-17l-10 70H50l-10-70Z" fill="#0c2036" stroke="#d7bd77" stroke-opacity=".5"/>
+        <path d="m64 146 9 15 17-24 17 24 9-15" fill="none" stroke="#d7bd77" stroke-opacity=".75"/>
+        <circle cx="90" cy="166" r="8" fill="#243a63" stroke="#d7bd77"/>
+        <path d="m90 160 2 4 4 2-4 2-2 4-2-4-4-2 4-2 2-4Z" fill="#f0dc99"/>
+      </svg>
+    </div>
+
+    <div class="card" aria-label="伏せたタロットカード"></div>
+    <div class="beam" aria-hidden="true"></div>
+
+    <div class="board-wrap" aria-label="透明クリスタル盤面">
+      <div class="board"></div>
+      <div class="orbit"></div>
+      <div class="single-star" title="単星の星図"></div>
+      <div class="core" title="星核"></div>
+    </div>
+
+    <div class="mist" aria-hidden="true"></div>
+  </section>
+
+  <div class="ui">
+    <div class="hint">第一段階：画面構成・距離感・視線誘導の確認用</div>
+    <button class="cta" type="button" disabled aria-disabled="true">
+      カードを混ぜる
+      <small>SHUFFLE — 第2段階で実装</small>
+    </button>
+  </div>
+</main>
+</body>
+</html>
