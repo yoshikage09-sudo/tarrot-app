@@ -1,0 +1,33 @@
+/* Artwork integration trial. Keep all earlier demos intact. */
+body{background:#030710}
+.scene{--art-width:min(100vw,520px);--art-height:calc(var(--art-width) * 1.7778);max-width:520px;margin:auto;min-height:100svh;background:#080d18 url('assets/astral/oracle-room.jpg') center top / 100% auto no-repeat}
+.scene::after{background:linear-gradient(#02071355,transparent 25%,transparent 70%,#03081266);z-index:1}
+.library,.owl,.stars,.board,.spark{display:none}
+.header{height:auto;padding:24px 42px 0;text-shadow:0 2px 9px #000,0 0 20px #000;z-index:40}
+.brand{font-size:9px;letter-spacing:.17em}
+.title{font-size:clamp(25px,7vw,36px);margin-top:13px}
+.header .prompt{font-size:11px;line-height:1.8;margin-top:12px}
+.back{left:8px;top:15px;background:#07101a88}
+.room{position:absolute;left:0;top:0;width:100%;height:calc(var(--art-height) * .84);min-height:0;max-width:none;margin:0;padding:0;z-index:10}
+.bottom{position:relative;margin:calc(var(--art-height) * .84 - 151px) auto 0;padding:15px 20px 22px;width:100%;max-width:none;background:linear-gradient(transparent,#060c17e8 38%);z-index:45}
+.caption,.status,.hint{color:#fff1d1;text-shadow:0 2px 6px #000}
+.status{font-size:12px;min-height:38px}
+.demo-note{color:#d2c4ab}
+.deck{left:55%;top:calc(var(--art-height) * .38);width:70px;height:112px}
+.reveal-card{left:55%;top:calc(var(--art-height) * .38);width:88px;height:141px;margin-left:-44px}
+.deck i,.orbit-card,.orbit-card[aria-pressed=true],.card-back{background:#0b1527 url('assets/astral/card-back.jpg') center / 100% 100% no-repeat;border-color:#e8ce90}
+.deck i::after,.orbit-card::before,.card-back::after{display:none}
+.card-back{font-size:0}
+.orbit-window{height:145px}
+.orbit-card{width:44px;height:72px}
+.board-area{top:calc(var(--art-height) * .50);bottom:auto;width:100%;height:calc(var(--art-height) * .31);aspect-ratio:auto}
+.diagram{top:54%;width:76%;opacity:.6}
+.core,.core-halo,.pulse-ring,.beam-dot{top:54%}
+.core{width:26px;opacity:.72}
+.core::after{font-size:17px}
+.core-halo{width:150px}
+.ritual-light{overflow:hidden}
+.aurora,.halo,.rays,.stardust,.ritual-light::after{top:56%;left:55%}
+.mist{bottom:10%;opacity:.3}
+.scene[data-ritual=gather]::after,.scene[data-ritual=hush]::after,.scene[data-ritual=opening]::after{background:radial-gradient(ellipse at 55% 47%,transparent 10%,#03081466 80%)}
+@media(max-width:350px){.header{padding-top:15px}.header .prompt{font-size:10px}.title{margin-top:8px}.bottom{margin-top:calc(var(--art-height) * .84 - 133px)}.reveal-card{width:76px;height:122px;margin-left:-38px}.deck{width:62px;height:99px}}

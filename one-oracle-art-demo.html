@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#06101c">
+<title>アストラルライブラリー｜ワンオラクル・美術統合版</title>
+<style>
+:root{
+  --gold:#dec176;
+  --gold2:#fff0b5;
+  --ivory:#fff8e8;
+  --text:#e8edf5;
+  --muted:#aeb8c7;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#020610;color:var(--text);font-family:"Hiragino Sans","Yu Gothic",system-ui,-apple-system,sans-serif}
+button{font:inherit}
+.scene{
+  position:relative;min-height:100vh;overflow:hidden;isolation:isolate;
+  background:
+    radial-gradient(circle at 50% 12%,rgba(103,135,196,.20),transparent 25%),
+    radial-gradient(ellipse at 49% 66%,rgba(102,78,172,.19),transparent 32%),
+    radial-gradient(ellipse at 66% 72%,rgba(49,104,157,.13),transparent 30%),
+    linear-gradient(180deg,#0b1828,#07131f 45%,#030812 100%);
+}
+.scene::after{
+  content:"";position:absolute;inset:0;z-index:40;pointer-events:none;
+  background:linear-gradient(90deg,rgba(0,0,0,.58),transparent 23%,transparent 77%,rgba(0,0,0,.58)),
+             linear-gradient(180deg,transparent 58%,rgba(0,0,0,.35));
+}
+.stars{position:absolute;inset:0;z-index:-8;opacity:.68;background-image:
+ radial-gradient(circle at 9% 12%,#fff 0 1px,transparent 1.4px),
+ radial-gradient(circle at 18% 28%,#ffe7a8 0 1px,transparent 1.5px),
+ radial-gradient(circle at 31% 15%,#dce9ff 0 1px,transparent 1.4px),
+ radial-gradient(circle at 47% 8%,#fff 0 1px,transparent 1.4px),
+ radial-gradient(circle at 61% 24%,#e9dcff 0 1px,transparent 1.5px),
+ radial-gradient(circle at 73% 12%,#fff3c5 0 1px,transparent 1.4px),
+ radial-gradient(circle at 87% 31%,#fff 0 1px,transparent 1.4px),
+ radial-gradient(circle at 14% 62%,#dbe8ff 0 1px,transparent 1.5px),
+ radial-gradient(circle at 82% 68%,#fff0bd 0 1px,transparent 1.5px)
+}
+.library{position:absolute;inset:0;z-index:-7;pointer-events:none}
+.window{
+  position:absolute;left:50%;top:8%;transform:translateX(-50%);
+  width:min(70vw,610px);height:min(68vh,720px);
+  border:1px solid rgba(222,193,119,.22);border-bottom:0;
+  border-radius:52% 52% 0 0 / 24% 24% 0 0;
+  box-shadow:inset 0 0 80px rgba(100,137,194,.07);
+}
+.window::before{content:"";position:absolute;inset:8% 10% 0;border:1px solid rgba(222,193,119,.10);border-bottom:0;border-radius:52% 52% 0 0 / 24% 24% 0 0}
+.shelf{position:absolute;top:8%;bottom:0;width:18%;opacity:.36;background:
+ repeating-linear-gradient(180deg,transparent 0 10%,rgba(204,173,101,.15) 10.3% 10.6%,transparent 10.9% 18%),
+ repeating-linear-gradient(90deg,rgba(8,18,30,.82) 0 11%,rgba(100,75,45,.16) 11% 14%,rgba(8,18,30,.82) 14% 21%)}
+.shelf.left{left:0}.shelf.right{right:0}
+.header{position:relative;z-index:30;text-align:center;padding:calc(env(safe-area-inset-top) + 16px) 16px 0}
+.back{position:absolute;left:14px;top:calc(env(safe-area-inset-top) + 14px);width:44px;height:44px;border-radius:50%;display:grid;place-items:center;text-decoration:none;color:var(--ivory);font-size:26px;border:1px solid rgba(222,193,119,.28);background:rgba(5,13,22,.38)}
+.brand{font-family:Georgia,serif;font-size:11px;letter-spacing:.22em;color:#e3d29a}
+.title{margin:8px 0 2px;font-family:Georgia,"Yu Mincho",serif;font-size:clamp(26px,7vw,38px);font-weight:500;color:#fff4d1}
+.sub{font-family:Georgia,serif;font-size:10px;letter-spacing:.28em;color:#baa369}
+.prompt{margin:10px auto 0;max-width:470px;font-size:12px;line-height:1.75;color:#d7ddea}
+.room{position:relative;max-width:760px;margin:0 auto;min-height:min(760px,76vh);padding:6px 4px 112px;z-index:10}
+.owl{position:absolute;left:clamp(0px,4vw,34px);top:29%;width:clamp(104px,27vw,174px);z-index:18;filter:drop-shadow(0 18px 28px rgba(0,0,0,.55))}
+.owl svg{width:100%;display:block}
+.card{
+  position:absolute;left:50%;top:19%;transform:translateX(-50%);
+  width:clamp(76px,20vw,118px);aspect-ratio:.625;z-index:24;border-radius:10px;overflow:hidden;
+  background:radial-gradient(circle at 50% 48%,rgba(238,205,116,.12),transparent 20%),linear-gradient(145deg,#123451,#07172a 58%,#0e2b46);
+  border:1px solid rgba(245,219,145,.72);box-shadow:0 0 24px rgba(224,194,110,.15),0 18px 34px rgba(0,0,0,.48)
+}
+.card::before{content:"";position:absolute;inset:8px;border:1px solid rgba(229,200,126,.56);border-radius:7px}
+.card::after{content:"✦";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:clamp(30px,8vw,50px);color:#efd582;text-shadow:0 0 14px rgba(247,226,156,.52)}
+.board-area{position:absolute;left:50%;bottom:4%;transform:translateX(-50%);width:min(94vw,640px);aspect-ratio:1.28;z-index:13}
+.board{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) perspective(780px) rotateX(59deg);
+  width:82%;aspect-ratio:1;border-radius:50%;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(252,234,177,.09) 0 4%,transparent 5% 24%,rgba(223,200,132,.05) 24.5% 25%,transparent 25.5%),
+    radial-gradient(circle at 35% 62%,rgba(131,89,184,.30),transparent 28%),
+    radial-gradient(circle at 63% 41%,rgba(62,123,189,.28),transparent 30%),
+    rgba(10,31,50,.60);
+  border:2px solid rgba(227,202,133,.48);
+  box-shadow:inset 0 0 34px rgba(151,204,235,.12),0 0 0 8px rgba(94,72,41,.09),0 28px 65px rgba(0,0,0,.60)
+}
+.board::after{content:"";position:absolute;left:-4%;right:-4%;top:14%;height:17%;transform:rotate(-15deg);background:linear-gradient(180deg,rgba(255,255,255,.11),transparent);filter:blur(8px);opacity:.56;border-radius:50%}
+.diagram{position:absolute;left:50%;top:48%;width:64%;aspect-ratio:1;transform:translate(-50%,-50%) perspective(780px) rotateX(59deg);z-index:17;filter:drop-shadow(0 0 4px rgba(239,213,137,.20))}
+.diagram .ring,.diagram .axis,.diagram .node-line{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.diagram .ring{stroke:rgba(229,206,139,.52);stroke-width:1.1}
+.diagram .ring.soft{stroke:rgba(175,194,224,.22);stroke-width:.8}
+.diagram .axis{stroke:rgba(229,206,139,.19);stroke-width:.75}
+.diagram .draw{stroke-dasharray:1000;stroke-dashoffset:1000}
+.diagram .node-line{stroke:rgba(235,215,151,.70);stroke-width:1.2;stroke-dasharray:220;stroke-dashoffset:220}
+.diagram .star-node{fill:#fff0b0;opacity:0;filter:url(#strongGlow)}
+.diagram .secondary{fill:#a8c7ee;opacity:0}
+.core-halo,.pulse-ring,.core,.beam-dot{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%)}
+.core-halo{width:clamp(118px,27vw,188px);aspect-ratio:1;border-radius:50%;z-index:20;background:radial-gradient(circle,rgba(255,234,163,.20) 0 11%,rgba(143,126,209,.15) 26%,rgba(78,128,180,.08) 46%,transparent 70%);opacity:.30}
+.pulse-ring{width:clamp(118px,27vw,188px);aspect-ratio:1;border-radius:50%;z-index:19;border:1px solid rgba(244,222,150,.28);opacity:0}
+.core{
+  width:clamp(56px,14vw,88px);aspect-ratio:1;border-radius:50%;z-index:23;
+  background:radial-gradient(circle at 34% 28%,#fffdf0 0 3%,#f6e4a9 7%,#b5a4df 23%,#6481bc 40%,#24435f 60%,#08141f 75%);
+  border:1px solid rgba(249,228,163,.80);box-shadow:0 0 8px rgba(247,222,148,.28),0 0 28px rgba(133,114,199,.32),0 0 62px rgba(65,118,170,.13)
+}
+.core::before{content:"";position:absolute;inset:15%;border-radius:50%;border:1px solid rgba(255,246,207,.35)}
+.core::after{content:"✦";position:absolute;inset:0;display:grid;place-items:center;color:#fff1b9;font-size:25px;text-shadow:0 0 10px #fff2bb,0 0 24px rgba(240,201,102,.72)}
+.beam-dot{width:8px;height:8px;border-radius:50%;z-index:25;background:#fff7cb;box-shadow:0 0 8px #fff3bb,0 0 20px rgba(244,205,112,.82);opacity:0}
+.mist{position:absolute;left:5%;right:5%;bottom:14%;height:145px;z-index:20;pointer-events:none;opacity:.62}
+.mist::before,.mist::after{content:"";position:absolute;border-radius:50%;filter:blur(25px)}
+.mist::before{left:0;right:44%;top:22%;bottom:4%;background:radial-gradient(ellipse,rgba(176,193,227,.15),rgba(128,145,196,.05) 55%,transparent 74%)}
+.mist::after{left:39%;right:0;top:0;bottom:24%;background:radial-gradient(ellipse,rgba(164,131,203,.14),rgba(105,126,180,.05) 55%,transparent 72%)}
+.spark{position:absolute;width:4px;height:4px;border-radius:50%;background:#fff0b0;box-shadow:0 0 8px rgba(255,239,181,.85);opacity:.14;z-index:22}
+.s1{left:42%;top:40%}.s2{left:61%;top:44%;transform:scale(.7)}.s3{left:35%;top:57%;transform:scale(.55)}.s4{left:67%;top:62%;transform:scale(.5)}
+.bottom{position:absolute;left:50%;bottom:max(18px,env(safe-area-inset-bottom));transform:translateX(-50%);width:min(86vw,450px);z-index:50;text-align:center}
+.caption{font-size:10px;color:rgba(215,222,233,.74);margin-bottom:9px}
+button{
+  width:100%;height:52px;border-radius:999px;border:1px solid rgba(224,194,117,.56);color:#fff5d6;
+  background:linear-gradient(180deg,rgba(31,50,71,.93),rgba(10,23,38,.96));box-shadow:0 9px 28px rgba(0,0,0,.38);letter-spacing:.06em;cursor:pointer
+}
+button:focus-visible{outline:2px solid #fff2b1;outline-offset:3px}
+.status{font-size:10px;color:#aeb8c7;margin-top:8px;min-height:16px}
+.badge{position:absolute;right:10px;top:10px;z-index:55;padding:5px 8px;border-radius:999px;border:1px solid rgba(215,184,107,.18);background:rgba(2,9,17,.42);font-size:9px;color:#aa9b74}
+
+/* animation */
+.scene.playing .core{animation:coreWake 2.6s cubic-bezier(.22,.61,.36,1) both}
+.scene.playing .core-halo{animation:haloWake 2.6s cubic-bezier(.22,.61,.36,1) both}
+.scene.playing .pulse-ring{animation:ringPulse 1.5s ease-out .5s both}
+.scene.playing .diagram .outer{animation:drawLine 1.2s cubic-bezier(.3,.7,.2,1) .45s forwards}
+.scene.playing .diagram .mid{animation:drawLine 1.05s cubic-bezier(.3,.7,.2,1) .72s forwards}
+.scene.playing .diagram .inner{animation:drawLine .9s cubic-bezier(.3,.7,.2,1) .98s forwards}
+.scene.playing .diagram .a1{animation:drawLine .72s ease-out 1.13s forwards}
+.scene.playing .diagram .a2{animation:drawLine .72s ease-out 1.22s forwards}
+.scene.playing .diagram .a3{animation:drawLine .72s ease-out 1.31s forwards}
+.scene.playing .diagram .a4{animation:drawLine .72s ease-out 1.40s forwards}
+.scene.playing .diagram .node-line{animation:drawNode .8s cubic-bezier(.22,.61,.36,1) 1.72s forwards}
+.scene.playing .diagram .star-node{animation:nodeReveal .7s ease-out 2.24s forwards}
+.scene.playing .diagram .n1{animation:smallNode .5s ease-out 1.60s forwards}
+.scene.playing .diagram .n2{animation:smallNode .5s ease-out 1.78s forwards}
+.scene.playing .diagram .n3{animation:smallNode .5s ease-out 1.94s forwards}
+.scene.playing .beam-dot{animation:travel 1s cubic-bezier(.4,0,.2,1) 1.52s forwards}
+.scene.playing .spark.s1{animation:sparkle 1.8s ease-in-out .48s both}
+.scene.playing .spark.s2{animation:sparkle 1.8s ease-in-out .85s both}
+.scene.playing .spark.s3{animation:sparkle 1.8s ease-in-out 1.18s both}
+.scene.playing .spark.s4{animation:sparkle 1.8s ease-in-out 1.42s both}
+.scene.playing .card{animation:cardRespond 1.4s ease-out 2.1s both}
+@keyframes coreWake{
+  0%{transform:translate(-50%,-50%) scale(.93);filter:brightness(.72) saturate(.84);box-shadow:0 0 4px rgba(247,222,148,.15),0 0 14px rgba(133,114,199,.16)}
+  32%{transform:translate(-50%,-50%) scale(1.04);filter:brightness(1.38) saturate(1.08);box-shadow:0 0 13px rgba(255,235,173,.55),0 0 42px rgba(143,120,210,.53),0 0 78px rgba(72,133,188,.21)}
+  60%{transform:translate(-50%,-50%) scale(.995);filter:brightness(1.08)}
+  100%{transform:translate(-50%,-50%) scale(1);filter:brightness(1);box-shadow:0 0 10px rgba(247,222,148,.36),0 0 32px rgba(133,114,199,.37),0 0 62px rgba(65,118,170,.14)}
+}
+@keyframes haloWake{0%{opacity:.18;transform:translate(-50%,-50%) scale(.72)}35%{opacity:.70;transform:translate(-50%,-50%) scale(1.08)}100%{opacity:.38;transform:translate(-50%,-50%) scale(1)}}
+@keyframes ringPulse{0%{opacity:0;transform:translate(-50%,-50%) scale(.55)}18%{opacity:.70}100%{opacity:0;transform:translate(-50%,-50%) scale(1.35)}}
+@keyframes drawLine{to{stroke-dashoffset:0}}
+@keyframes drawNode{to{stroke-dashoffset:0}}
+@keyframes nodeReveal{0%{opacity:0;r:3}50%{opacity:1;r:8}100%{opacity:1;r:5}}
+@keyframes smallNode{from{opacity:0}to{opacity:.7}}
+@keyframes travel{0%{opacity:0;transform:translate(-50%,-50%) translateY(0) scale(.6)}12%{opacity:1}82%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) translateY(-140px) scale(1)}}
+@keyframes sparkle{0%,100%{opacity:.12;transform:scale(.5)}50%{opacity:.95;transform:scale(1.35)}}
+@keyframes cardRespond{0%{filter:brightness(1)}48%{filter:brightness(1.28);box-shadow:0 0 12px rgba(255,235,173,.35),0 0 32px rgba(224,194,110,.26),0 18px 34px rgba(0,0,0,.48)}100%{filter:brightness(1)}}
+@media(max-width:520px){
+  .room{min-height:670px}
+  .owl{top:31%}
+  .board-area{bottom:7%}
+  .diagram{width:72%;top:50%}
+  .core-halo,.pulse-ring,.core,.beam-dot{top:54%}
+  @keyframes travel{0%{opacity:0;transform:translate(-50%,-50%) translateY(0) scale(.6)}12%{opacity:1}82%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) translateY(-155px) scale(1)}}
+}
+@media(prefers-reduced-motion:reduce){
+  .scene.playing *{animation:none!important}
+  .diagram .draw,.diagram .node-line{stroke-dashoffset:0}
+  .diagram .star-node{opacity:1}.diagram .secondary{opacity:.7}
+}
+</style>
+<link rel="stylesheet" href="one-oracle-flow.css">
+<link rel="stylesheet" href="one-oracle-luminous.css?v=2">
+<link rel="stylesheet" href="one-oracle-art.css">
+</head>
+<body>
+<main class="scene" id="scene">
+  <div class="stars"></div>
+  <div class="library"><div class="shelf left"></div><div class="shelf right"></div><div class="window"></div></div>
+  <div class="badge">ONE ORACLE · FLOW DEMO</div>
+
+  <header class="header">
+    <a class="back" href="index.html" aria-label="戻る">‹</a>
+    <div class="brand">✦ &nbsp; ASTRAL LIBRARY &nbsp; ✦</div>
+    <h1 class="title">ワンオラクル</h1>
+    <div class="sub">ONE ORACLE</div>
+    <p class="prompt">問いを心に思い浮かべてください。<br>星の書庫が静かに、ひとつの記録をひらきます。</p>
+  </header>
+
+  <section class="room">
+    <div class="ritual-light" aria-hidden="true"><div class="aurora"></div><div class="halo halo-one"></div><div class="halo halo-two"></div><div class="halo halo-three"></div><div class="rays"></div><div class="stardust" id="stardust"></div></div>
+    <div class="owl" aria-label="星のフクロウ精霊">
+      <svg viewBox="0 0 180 230" role="img" aria-label="星のフクロウ精霊">
+        <defs>
+          <radialGradient id="eye" cx="42%" cy="34%"><stop offset="0" stop-color="#fff"/><stop offset=".18" stop-color="#8ab6e8"/><stop offset=".55" stop-color="#345b93"/><stop offset="1" stop-color="#06101c"/></radialGradient>
+          <linearGradient id="white" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fffdf5"/><stop offset=".58" stop-color="#e2e1db"/><stop offset="1" stop-color="#94a4b5"/></linearGradient>
+        </defs>
+        <path d="M30 86C18 51 39 24 67 31L90 8l23 23c28-7 49 20 37 55 18 22 18 69 4 102-14 32-38 44-64 44s-50-12-64-44c-14-33-14-80 4-102Z" fill="#0e243b" stroke="#d1b36d" stroke-opacity=".55"/>
+        <path d="M47 82c5-31 22-46 43-46s38 15 43 46c-9 28-23 44-43 44S56 110 47 82Z" fill="url(#white)"/>
+        <ellipse cx="68" cy="80" rx="23" ry="26" fill="#f5f0e6"/><ellipse cx="112" cy="80" rx="23" ry="26" fill="#f5f0e6"/>
+        <circle cx="68" cy="81" r="15" fill="url(#eye)" stroke="#d5b86d"/><circle cx="112" cy="81" r="15" fill="url(#eye)" stroke="#d5b86d"/>
+        <circle cx="64" cy="76" r="3" fill="#fff"/><circle cx="108" cy="76" r="3" fill="#fff"/>
+        <path d="M90 91l-8 7 8 6 8-6-8-7Z" fill="#c7a45b"/>
+        <path d="M55 46Q90 17 125 46" fill="none" stroke="#d5b86d" stroke-width="2"/>
+        <circle cx="90" cy="21" r="9" fill="#102a46" stroke="#d5b86d"/><path d="m90 14 2 5 5 2-5 2-2 5-2-5-5-2 5-2 2-5Z" fill="#f0d78a"/>
+        <path d="M43 137c15 14 28 18 47 18s32-4 47-18l-8 75H51l-8-75Z" fill="#0a2037" stroke="#d5b86d" stroke-opacity=".45"/>
+        <circle cx="90" cy="169" r="9" fill="#233d64" stroke="#d5b86d"/><path d="m90 162 2 5 5 2-5 2-2 5-2-5-5-2 5-2 2-5Z" fill="#f0d78a"/>
+      </svg>
+    </div>
+
+    <div class="deck" id="deck" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="orbit-window" id="orbitWindow" hidden><div class="orbit" id="orbit" role="group" aria-label="22枚の伏せたカード"></div></div>
+    <div class="reveal-card" id="revealCard" hidden><div class="card-turn"><div class="card-back">✦</div><div class="card-front"><small id="cardNumber"></small><span class="emblem">✧</span><strong id="cardName"></strong><small>ASTRAL LIBRARY</small></div></div></div>
+
+    <div class="board-area">
+      <div class="board"></div>
+
+      <svg class="diagram" viewBox="0 0 400 400" aria-label="単星の星図">
+        <defs>
+          <filter id="strongGlow" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="5.5" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <circle cx="200" cy="200" r="150" class="ring outer draw"/>
+        <circle cx="200" cy="200" r="112" class="ring soft mid draw"/>
+        <circle cx="200" cy="200" r="70" class="ring soft inner draw"/>
+        <line x1="50" y1="200" x2="350" y2="200" class="axis a1 draw"/>
+        <line x1="200" y1="50" x2="200" y2="350" class="axis a2 draw"/>
+        <line x1="94" y1="94" x2="306" y2="306" class="axis a3 draw"/>
+        <line x1="306" y1="94" x2="94" y2="306" class="axis a4 draw"/>
+        <circle cx="150" cy="145" r="2.2" class="secondary n1"/>
+        <circle cx="257" cy="164" r="2.2" class="secondary n2"/>
+        <circle cx="244" cy="254" r="2.2" class="secondary n3"/>
+        <line x1="200" y1="242" x2="200" y2="118" class="node-line"/>
+        <circle cx="200" cy="112" r="5" class="star-node"/>
+      </svg>
+
+      <div class="pulse-ring"></div>
+      <div class="core-halo"></div>
+      <div class="core" aria-label="星核"></div>
+      <div class="beam-dot"></div>
+    </div>
+
+    <div class="mist"></div>
+    <div class="spark s1"></div><div class="spark s2"></div><div class="spark s3"></div><div class="spark s4"></div>
+  </section>
+
+  <div class="bottom">
+    <div class="caption" id="step">01 / 問いを心に</div>
+    <p class="status" id="status" role="status" aria-live="polite">心が整ったら、カードを混ぜてください。</p>
+    <div id="cutControls" hidden><label for="cutPosition">カットする位置 <output id="cutValue">11 / 22</output></label><input id="cutPosition" type="range" min="1" max="21" value="11"><p class="hint">上から何枚のところで分けるか、選んでください。</p></div>
+    <div id="selectionControls" hidden><div class="navigation"><button id="previous" type="button" aria-label="前のカードを選択">‹</button><span id="selectionLabel">カードを選んでください</span><button id="next" type="button" aria-label="次のカードを選択">›</button></div><p class="hint">横にスワイプして22枚を見渡せます。確定までは選び直せます。</p></div>
+    <button id="action" type="button">カードを混ぜる</button>
+    <button id="restart" class="secondary-button" type="button" hidden>もう一度占う</button>
+    <p class="demo-note">美術統合版 / 表面の絵は仮・正位置のみ</p>
+  </div>
+</main>
+<script src="one-oracle-flow-core.js"></script>
+<script src="one-oracle-luminous-ui.js?v=2"></script>
+</body>
+</html>
