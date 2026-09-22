@@ -12,11 +12,6 @@
 .rays{position:absolute;left:50%;top:49%;width:360px;height:360px;margin:-180px;background:repeating-conic-gradient(from 12deg,transparent 0deg 14deg,#ffefb522 15deg,transparent 16deg 30deg);border-radius:50%;mask-image:radial-gradient(circle,transparent 18%,#000 36%,transparent 70%);opacity:0}
 .stardust{position:absolute;left:50%;top:49%;width:1px;height:1px}
 .stardust i{position:absolute;width:var(--size);height:var(--size);background:#fff0c1;border-radius:50%;box-shadow:0 0 7px #ffe6a7;opacity:0}
-.gold-thread{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:29;opacity:0;transition:opacity .25s}
-.gold-thread path{fill:none;stroke:url(#threadGold);stroke-width:1.5;stroke-dasharray:4 5}
-.gold-thread circle{fill:#fff1bd}
-.attuned .gold-thread path{animation:threadFlow 1.6s linear infinite}
-@keyframes threadFlow{to{stroke-dashoffset:-36}}
 .deck{perspective:650px}
 .deck i{box-shadow:0 0 0 2px #17253b,0 0 0 3px #dab97433,0 12px 25px #0008}
 .deck.shuffling i:nth-child(2){animation:richShuffle .54s cubic-bezier(.4,0,.2,1) 3}
@@ -59,4 +54,17 @@
 .scene.cleared .mist{transition:opacity 2s,transform 2s;transform:translateY(32px) scale(1.3)}
 [data-ritual=result] .halo{opacity:.18;transform:translate(-50%,-50%) rotate(30deg) scale(1)}
 [data-ritual=result] .aurora{opacity:.4;transform:scale(1)}
-@media(prefers-reduced-motion:reduce){.gold-thread path,.orbit-card[aria-pressed=true]::after{animation:none!important}.ritual-light .stardust,.ritual-light .rays{display:none}.aurora{transition:none!important}.scene[data-ritual=result] .halo{opacity:.15}}
+@media(prefers-reduced-motion:reduce){.orbit-card[aria-pressed=true]::after{animation:none!important}.ritual-light .stardust,.ritual-light .rays{display:none}.aurora{transition:none!important}.scene[data-ritual=result] .halo{opacity:.15}}
+
+/* A single broad bloom, followed by staggered, soft star glints. */
+.stardust i{box-shadow:0 0 5px 2px #fff5d5,0 0 16px 5px #f4cf8c88,0 0 32px 10px #b59be744}
+.stardust .star-flare::before,.stardust .star-flare::after{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:50%;background:linear-gradient(transparent,#fff8df,transparent);box-shadow:0 0 12px #ffe0a7aa}
+.stardust .star-flare::before{width:2px;height:24px}
+.stardust .star-flare::after{width:22px;height:2px;background:linear-gradient(90deg,transparent,#fff8df,transparent)}
+.ritual-light::after{content:'';position:absolute;left:50%;top:49%;width:min(125vw,560px);aspect-ratio:1;transform:translate(-50%,-50%) scale(.6);border-radius:50%;background:radial-gradient(circle,#fff1c444 0%,#f1ce922b 20%,#b499df22 39%,transparent 68%);opacity:0}
+[data-ritual=opening] .ritual-light::after{animation:wideBloom 3s ease-out both}
+@keyframes wideBloom{0%{opacity:0;transform:translate(-50%,-50%) scale(.55)}22%{opacity:.95}60%{opacity:.55}100%{opacity:0;transform:translate(-50%,-50%) scale(1.15)}}
+[data-ritual=opening] .stardust i{animation:dustBloom 2.7s cubic-bezier(.15,.5,.25,1) both;animation-delay:calc(.18s + var(--delay))}
+@keyframes dustBloom{0%{opacity:0;transform:translate(0,0) scale(.35)}22%{opacity:.95}45%{opacity:.45}58%{opacity:.85}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.65)}}
+.scene.playing .spark{box-shadow:0 0 6px 2px #fff1bd,0 0 22px 8px #f2d09c88,0 0 42px 14px #b69cde44}
+@media(prefers-reduced-motion:reduce){.ritual-light::after{animation:none!important;opacity:0}}
