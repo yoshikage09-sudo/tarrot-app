@@ -1,17 +1,17 @@
 'use strict';
 const shell=document.querySelector('#shell'),owl=document.querySelector('#owl'),start=document.querySelector('#start'),still=document.querySelector('#still'),menu=document.querySelector('#menu'),statusLine=document.querySelector('#greetingStatus');
-let busy=false,blinkTimer;let epoch=0;
+let busy=false,blinkTimer,idleTimer;let epoch=0;
 const reduced=matchMedia('(prefers-reduced-motion:reduce)');
 try{still.checked=localStorage.getItem('astral-reduced-motion')==='true'||reduced.matches}catch{still.checked=reduced.matches}
 function motion(){document.body.classList.toggle('still',still.checked)}motion();still.addEventListener('change',()=>{motion();try{localStorage.setItem('astral-reduced-motion',String(still.checked))}catch{}});
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
 async function blink(){owl.classList.add('blink');await wait(160);owl.classList.remove('blink')}
 function scheduleBlink(){clearTimeout(blinkTimer);blinkTimer=setTimeout(async()=>{if(!busy&&!document.hidden&&!still.checked&&!document.querySelector('#home').hidden)await blink();scheduleBlink()},5000+Math.random()*3000)}
-function route(focus=true){const key=['home','choose','records','cards'].includes(location.hash.slice(1))?location.hash.slice(1):'home';epoch++;busy=false;start.disabled=false;shell.classList.remove('unlock');owl.classList.remove('respond');for(const name of ['home','choose','records','cards'])document.getElementById(name).hidden=name!==key;if(menu.open)menu.close();if(focus&&key!=='home')document.getElementById(key+'Title').focus({preventScroll:true});window.scrollTo({top:0,behavior:'instant'});statusLine.textContent='星の書庫へ、ようこそ。'}
+function route(focus=true){const key=['home','choose','records','cards'].includes(location.hash.slice(1))?location.hash.slice(1):'home';epoch++;busy=false;start.disabled=false;shell.classList.remove('unlock');owl.classList.remove('respond','idle-tilt','ear-twitch');for(const name of ['home','choose','records','cards'])document.getElementById(name).hidden=name!==key;if(menu.open)menu.close();if(focus&&key!=='home')document.getElementById(key+'Title').focus({preventScroll:true});window.scrollTo({top:0,behavior:'instant'});statusLine.textContent='星の書庫へ、ようこそ。'}
 window.addEventListener('hashchange',()=>route());route(false);
-start.addEventListener('click',async()=>{if(busy)return;busy=true;start.disabled=true;const ticket=++epoch;const active=()=>ticket===epoch;
+start.addEventListener('click',async()=>{if(busy)return;busy=true;owl.classList.remove('idle-tilt','ear-twitch');start.disabled=true;const ticket=++epoch;const active=()=>ticket===epoch;
  if(still.checked){location.hash='choose';return;}
- await wait(200);if(!active())return;owl.classList.add('respond');statusLine.textContent='案内役が、あなたに気づきました。';await wait(150);if(!active())return;await blink();await wait(700);if(!active())return;shell.classList.add('unlock');statusLine.textContent='星の書庫が、ひらきます。';await wait(2200);if(active())location.hash='choose';
+ await wait(200);if(!active())return;owl.classList.add('respond');statusLine.textContent='星の光が、あなたを迎えます。';await wait(150);if(!active())return;await blink();await wait(700);if(!active())return;shell.classList.add('unlock');statusLine.textContent='星の書庫が、ひらきます。';await wait(2200);if(active())location.hash='choose';
 });
 document.querySelector('#menuOpen').addEventListener('click',()=>menu.showModal());document.querySelector('#menuClose').addEventListener('click',()=>menu.close());menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>menu.close()));
 function startBreathing(){
@@ -39,3 +39,25 @@ function startBreathing(){
 
 Promise.all([...document.images].map(i=>i.decode())).then(()=>{startBreathing();scheduleBlink()}).catch(()=>{scheduleBlink()});
 
+
+const lightPoints=[
+[15,15,48,4.2],[80,2,52,5.3],[84,26,60,4.9],[97,46,58,3.7],[18,30,34,5.8],[36,31,28,4.4],[2,75,48,5.2],[94,92,95,6.5],
+[50,66,42,3.8],[51,60,20,4.8],[21,67,20,5.3],[76,70,24,4.4],[17,73,20,3.9],[83,73,22,5.6],[52,77,24,4.9],[36,69,14,4.6],[64,65,14,5.7],[27,62,14,4.1],[70,61,14,5.2],[69,7,10,6.1],[57,4,10,4.9]];
+const field=document.querySelector('.living-lights');
+lightPoints.forEach(([x,y,size,duration],i)=>{const light=document.createElement('i');if(i>=8)light.className='star-light';light.style.cssText='--x:'+x+'%;--y:'+y+'%;--size:'+size+'px;--duration:'+duration+'s;--delay:'+(-i*.67)+'s';field.append(light)});
+let idleCount=0;
+function scheduleIdle(){
+ clearTimeout(idleTimer);
+ idleTimer=setTimeout(async()=>{
+  if(!busy&&!document.hidden&&!still.checked&&!menu.open&&!document.querySelector('#home').hidden){
+   const ticket=epoch,gesture=idleCount++%2===0?'idle-tilt':'ear-twitch';
+   owl.classList.add(gesture);
+   await wait(gesture==='idle-tilt'?3900:1100);
+   if(ticket===epoch)owl.classList.remove(gesture);
+  }
+  scheduleIdle();
+ },6000+Math.random()*2500);
+}
+scheduleIdle();
+document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(idleTimer);owl.classList.remove('idle-tilt','ear-twitch')}else scheduleIdle()});
+still.addEventListener('change',()=>{owl.classList.remove('idle-tilt','ear-twitch')});
