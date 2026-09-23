@@ -33,14 +33,14 @@ body{background:#030710}
 @media(max-width:350px){.header{padding-top:15px}.header .prompt{font-size:10px}.title{margin-top:8px}.bottom{margin-top:calc(var(--art-height) * .84 - 133px)}.reveal-card{width:76px;height:122px;margin-left:-38px}.deck{width:62px;height:99px}}
 
 /* Card sizing follows the artwork width, with one shared horizontal axis. */
-.scene{--deck-width:calc(var(--art-width) * .36);--result-width:calc(var(--art-width) * .64);--pick-width:calc(var(--art-width) * .24)}
+.scene{--deck-width:calc(var(--art-width) * .36);--result-width:var(--deck-width);--pick-width:calc(var(--art-width) * .24)}
 .deck{left:50%;top:calc(var(--art-height) * .33);width:var(--deck-width);height:calc(var(--deck-width) * 1.6)}
-.reveal-card{left:50%;top:max(170px,calc(var(--art-height) * .19));width:var(--result-width);height:calc(var(--result-width) * 1.6);margin-left:calc(var(--result-width) * -.5)}
-.card-front{gap:calc(var(--art-width) * .04)}
+.reveal-card{left:50%;top:calc(var(--art-height) * .33);width:var(--result-width);height:calc(var(--result-width) * 1.6);margin-left:calc(var(--result-width) * -.5)}
+.card-front{gap:calc(var(--art-width) * .025)}
 .card-front::before{inset:6%;border-radius:8px}
-.card-front small{font-size:clamp(10px,3vw,16px)}
-.card-front strong{font-size:clamp(22px,6vw,32px)}
-.card-front .emblem{width:45%;height:auto;aspect-ratio:1;font-size:clamp(55px,16vw,85px)}
+.card-front small{font-size:clamp(7px,1.7vw,9px)}
+.card-front strong{font-size:clamp(14px,3.8vw,20px)}
+.card-front .emblem{width:45%;height:auto;aspect-ratio:1;font-size:clamp(32px,9vw,47px)}
 .orbit-window{bottom:calc(var(--art-height) * .05);height:calc(var(--pick-width) * 1.6 + 100px);scrollbar-width:none;touch-action:pan-x;cursor:grab;scroll-snap-type:x mandatory}
 .orbit-window::-webkit-scrollbar{display:none}
 .orbit-window:active{cursor:grabbing}
@@ -49,5 +49,5 @@ body{background:#030710}
 .orbit-card[aria-pressed=true]{transform:translateY(-12px) scale(1.04)}
 .scene[data-ritual=gather] .orbit-window,.scene[data-ritual=hush] .orbit-window,.scene[data-ritual=opening] .orbit-window,.scene[data-ritual=result] .orbit-window{visibility:hidden}
 .aurora,.halo,.rays,.stardust,.ritual-light::after{left:50%}
-.scene{--result-width:min(calc(var(--art-width) * .64),calc((var(--art-height) * .81 - 170px) / 1.6))}
+
 
