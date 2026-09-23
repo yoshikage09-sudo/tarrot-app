@@ -42,9 +42,9 @@ Promise.all([...document.images].map(i=>i.decode())).then(()=>{startBreathing();
 
 const lightPoints=[
 [15,15,48,4.2],[80,2,52,5.3],[84,26,60,4.9],[97,46,58,3.7],[18,30,34,5.8],[36,31,28,4.4],[2,75,48,5.2],[94,92,95,6.5],
-[50,66,42,3.8],[51,60,20,4.8],[21,67,20,5.3],[76,70,24,4.4],[17,73,20,3.9],[83,73,22,5.6],[52,77,24,4.9],[36,69,14,4.6],[64,65,14,5.7],[27,62,14,4.1],[70,61,14,5.2],[69,7,10,6.1],[57,4,10,4.9]];
+[50,66,110,6.5],[51,60,28,5.4],[21,67,28,6.2],[76,70,30,5.7],[17,73,28,6.9],[83,73,30,7.3],[52,77,24,4.9],[36,69,14,4.6],[64,65,14,5.7],[27,62,14,4.1],[70,61,14,5.2],[69,7,10,6.1],[57,4,10,4.9]];
 const field=document.querySelector('.living-lights');
-lightPoints.forEach(([x,y,size,duration],i)=>{const light=document.createElement('i');if(i>=8)light.className='star-light';light.style.cssText='--x:'+x+'%;--y:'+y+'%;--size:'+size+'px;--duration:'+duration+'s;--delay:'+(-i*.67)+'s';field.append(light)});
+lightPoints.forEach(([x,y,size,duration],i)=>{const light=document.createElement('i');light.className=i<8?'lamp-light':i===8?'core-light':i>=19?'window-light':'star-light';light.style.cssText='--x:'+x+'%;--y:'+y+'%;--size:'+size+'px;--duration:'+duration+'s;--delay:'+(-i*.67)+'s';field.append(light)});
 let idleCount=0;
 function scheduleIdle(){
  clearTimeout(idleTimer);

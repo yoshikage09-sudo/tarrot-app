@@ -17,3 +17,16 @@ body.still .ear,body.still .living-lights i{animation:none!important}body.still 
 
 /* The head tilt now belongs to idle time; starting triggers the existing light cue. */
 .respond .head{animation:none}
+
+/* Light sources have individual rhythms; no full-screen brightness animation. */
+.living-lights .lamp-light{background:radial-gradient(ellipse,#fff1b7bb 0%,#ffd08666 20%,#efa74229 44%,transparent 72%);animation-name:lampFlicker;animation-direction:normal}
+@keyframes lampFlicker{0%,100%{opacity:.28;scale:.92}18%{opacity:.68;scale:1.06}32%{opacity:.42;scale:.98}51%{opacity:.83;scale:1.12}68%{opacity:.51;scale:1.02}86%{opacity:.73;scale:1.07}}
+.living-lights .star-light{background:radial-gradient(circle,#fffbe9 0%,#ffe9b8b3 12%,#e1bf6940 36%,transparent 70%);animation-name:starGlimmer;animation-direction:normal}
+.living-lights .star-light:before,.living-lights .star-light:after{content:'';position:absolute;inset:8% 47%;background:linear-gradient(transparent,#fff8d8,transparent);box-shadow:0 0 6px #ffe0a266}
+.living-lights .star-light:before{transform:rotate(90deg)}
+@keyframes starGlimmer{0%,12%,78%,100%{opacity:.08;scale:.65}34%{opacity:.96;scale:1.2}49%{opacity:.4;scale:.92}60%{opacity:.64;scale:1.04}}
+.living-lights .core-light{background:radial-gradient(ellipse,#fff8d8b3 0%,#ffe4a369 13%,#e3bd7033 36%,transparent 70%);animation-name:coreBreathe;animation-direction:normal}
+@keyframes coreBreathe{0%,100%{opacity:.22;scale:.8}48%{opacity:.82;scale:1.18}}
+.living-lights .window-light{background:radial-gradient(circle,#eef3ffd9 0%,#bdcaff60 15%,transparent 65%);animation-name:windowTwinkle;animation-direction:normal}
+@keyframes windowTwinkle{0%,100%{opacity:.06;scale:.75}38%{opacity:.5;scale:1}63%{opacity:.14;scale:.8}}
+body.still .living-lights i{scale:1;opacity:.14}
