@@ -173,7 +173,7 @@ button:focus-visible{outline:2px solid #fff2b1;outline-offset:3px}
 <link rel="stylesheet" href="one-oracle-flow.css">
 <link rel="stylesheet" href="one-oracle-luminous.css?v=2">
 <link rel="stylesheet" href="one-oracle-art.css?v=3">
-</head>
+<link rel="stylesheet" href="oracle-journal.css?v=1"></head>
 <body>
 <main class="scene" id="scene">
   <div class="stars"></div>
@@ -253,12 +253,13 @@ button:focus-visible{outline:2px solid #fff2b1;outline-offset:3px}
     <div id="cutControls" hidden><label for="cutPosition">カットする位置 <output id="cutValue">11 / 22</output></label><input id="cutPosition" type="range" min="1" max="21" value="11"><p class="hint">上から何枚のところで分けるか、選んでください。</p></div>
     <div id="selectionControls" hidden><div class="navigation"><button id="previous" type="button" aria-label="前のカードを選択">‹</button><span id="selectionLabel">カードを選んでください</span><button id="next" type="button" aria-label="次のカードを選択">›</button></div><p class="hint">横にスワイプして22枚を見渡せます。確定までは選び直せます。</p></div>
     <button id="action" type="button">カードを混ぜる</button>
+    <section id="journalResult" class="journal-result" aria-label="占いのメッセージと保存" hidden></section>
     <button id="restart" class="secondary-button" type="button" hidden>もう一度占う</button>
     <p class="demo-note">美術統合版 / 表面の絵は仮・正位置のみ</p>
   </div>
 </main>
 <script src="one-oracle-flow-core.js"></script>
-<script src="one-oracle-art-ui.js?v=1"></script>
+<script src="oracle-messages.js?v=1"></script><script src="oracle-journal-store.js?v=1"></script><script src="oracle-journal-ui.js?v=1"></script><script src="one-oracle-art-ui.js?v=2"></script>
 <script>if(new URLSearchParams(location.search).get('from')==='library'){const back=document.querySelector('.back');if(back){back.href='library-entrance.html#choose';back.setAttribute('aria-label','占い一覧へ戻る');}}</script>
 </body>
 </html>
