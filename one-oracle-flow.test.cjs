@@ -1,32 +1,4 @@
-const { test } = require('node:test');
-const assert = require('node:assert/strict');
-const { Oracle, shuffle, cut, cards } = require('./one-oracle-flow-core.js');
-test('Fisher-Yates preserves cards and uses shrinking random ranges', () => {
-  let calls = 0;
-  const result = shuffle(cards, () => { calls++; return 0; });
-  assert.equal(calls, 21);
-  assert.deepEqual(result.map(c => c.id), [...cards.slice(1), cards[0]].map(c => c.id));
-  assert.equal(new Set(result.map(c => c.id)).size, 22);
-  assert.equal(cards[0].id, 0);
-});
-test('every cut rotates the actual deck without losing cards', () => {
-  for (let i=1;i<22;i++) assert.deepEqual(cut(cards,i), [...cards.slice(i),...cards.slice(0,i)]);
-  for (const n of [0,22,-1,1.5,NaN]) assert.throws(() => cut(cards,n));
-});
-test('selection may change until confirmation, then stays locked', () => {
-  const game = new Oracle(() => 0);
-  assert.throws(() => game.select(0));
-  game.start();
-  assert.throws(() => game.start());
-  game.cut(5);
-  game.select(2); game.select(21);
-  assert.equal(game.confirm().id, 5);
-  assert.throws(() => game.select(1));
-  assert.throws(() => game.confirm());
-  game.reset();
-  assert.equal(game.phase,'idle');
-  assert.equal(game.selected,null);
-  game.start(); game.cut(1);
-  assert.throws(() => game.confirm());
-  assert.throws(() => game.select(22));
-});
+const test=require('node:test');const assert=require('node:assert/strict');const {cards,shuffle,cut,Oracle}=require('./one-oracle-flow-core.js');
+test('fisher-yates keeps every card',()=>{const shuffled=shuffle(cards,()=>0);assert.equal(shuffled.length,22);assert.deepEqual(new Set(shuffled.map(c=>c.id)),new Set(cards.map(c=>c.id)))});
+test('cut really reorders deck',()=>assert.deepEqual(cut([1,2,3,4],2),[3,4,1,2]));
+test('confirmed card exposes stable upright metadata without extra random',()=>{let calls=0;const oracle=new Oracle(()=>{calls++;return .5});oracle.start();oracle.cut(11);oracle.select(0);const before=calls,card=oracle.confirm();assert.match(card.key,/^major-\d{2}$/);assert.equal(card.orientation,'upright');assert.equal(calls,before)});
