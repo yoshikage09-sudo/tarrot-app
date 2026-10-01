@@ -68,3 +68,205 @@
 @keyframes dustBloom{0%{opacity:0;transform:translate(0,0) scale(.35)}22%{opacity:.95}45%{opacity:.45}58%{opacity:.85}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.65)}}
 .scene.playing .spark{box-shadow:0 0 6px 2px #fff1bd,0 0 22px 8px #f2d09c88,0 0 42px 14px #b69cde44}
 @media(prefers-reduced-motion:reduce){.ritual-light::after{animation:none!important;opacity:0}}
+/* Effects boost: richer light with bounded layers for mobile rendering. */
+.ritual-light{
+  filter:saturate(1.28) brightness(1.12);
+}
+.aurora{
+  width:430px;
+  height:430px;
+  margin:-215px;
+  background:
+    radial-gradient(circle,#fff8df52 0 5%,#f4cf963d 14%,transparent 34%),
+    conic-gradient(from 45deg,transparent,#c4a8ff4d,transparent,#87cdf04a,transparent,#ffe19d45,transparent);
+  opacity:.42;
+  filter:blur(.2px) saturate(1.25);
+}
+.halo{
+  border-color:#ffe8adcc;
+  box-shadow:
+    0 0 12px 2px #fff5cfbb,
+    0 0 34px 8px #efc77c70,
+    0 0 68px 18px #9785d638,
+    inset 0 0 24px #ffe4a63d;
+}
+.halo-one{width:275px;height:275px}
+.halo-two{width:340px;height:340px;border-color:#cbe5ff99}
+.halo-three{width:410px;height:410px;border-color:#e1c0ff8a}
+.rays{
+  width:470px;
+  height:470px;
+  margin:-235px;
+  background:repeating-conic-gradient(from 12deg,transparent 0 12deg,#fff2bd52 13deg,transparent 15deg 26deg);
+  filter:drop-shadow(0 0 10px #f4cd8b99);
+}
+.stardust i{
+  box-shadow:
+    0 0 5px 2px #fff,
+    0 0 16px 6px #ffe09dcc,
+    0 0 38px 13px #b79deb70;
+}
+.stardust i::before,
+.stardust i::after{
+  content:'';
+  position:absolute;
+  left:50%;
+  top:50%;
+  border-radius:50%;
+  pointer-events:none;
+}
+.stardust i::before{
+  width:2px;
+  height:30px;
+  transform:translate(-50%,-50%);
+  background:linear-gradient(transparent,#fffdf1,transparent);
+  box-shadow:0 0 13px #ffe5a9;
+}
+.stardust i::after{
+  width:28px;
+  height:2px;
+  transform:translate(-50%,-50%);
+  background:linear-gradient(90deg,transparent,#fffdf1,transparent);
+  box-shadow:0 0 13px #c7b5ff;
+}
+.ritual-light::before{
+  content:'';
+  position:absolute;
+  left:50%;
+  top:49%;
+  width:min(138vw,650px);
+  aspect-ratio:1;
+  transform:translate(-50%,-50%) scale(.45);
+  border-radius:50%;
+  background:radial-gradient(circle,transparent 24%,#fff3c55c 25%,#eed18a30 32%,#a593e22c 45%,transparent 68%);
+  opacity:0;
+}
+.ritual-light::after{
+  width:min(145vw,680px);
+  background:radial-gradient(circle,#fff9e89c 0%,#ffe0a75c 17%,#bea8ff3d 39%,transparent 72%);
+  mix-blend-mode:screen;
+}
+.orbit-card{
+  box-shadow:0 0 0 1px #d8bb764d,0 12px 24px #0009;
+}
+.orbit-card[aria-pressed=true]{
+  transform:translateY(-16px) scale(1.07);
+  border-color:#fff0b5;
+  box-shadow:
+    0 0 0 2px #fff5d0c7,
+    0 0 24px 7px #ffd981bf,
+    0 0 62px 20px #9b88dd7a,
+    0 18px 28px #000b;
+  filter:brightness(1.18) saturate(1.15);
+}
+.orbit-card[aria-pressed=true]::after{
+  inset:-9px;
+  border:2px solid #fff2b9;
+  box-shadow:0 0 17px #fff1bb,0 0 38px #bc9ff0a3;
+  animation:chosenRingBoost 1.35s ease-out infinite;
+}
+@keyframes chosenRingBoost{
+  0%{opacity:.95;transform:scale(.92)}
+  45%{opacity:.72}
+  100%{opacity:0;transform:scale(1.42)}
+}
+.scene.attuned .ritual-light::before{
+  animation:selectedWave 1.35s cubic-bezier(.12,.55,.22,1) both;
+}
+.scene.attuned .aurora{
+  opacity:.95;
+  transform:scale(1.22);
+}
+.scene.attuned .core-halo{
+  opacity:1;
+  filter:brightness(1.35) saturate(1.25);
+  box-shadow:0 0 28px 10px #ffe3a582,0 0 75px 24px #9f8de65c;
+}
+@keyframes selectedWave{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.35)}
+  24%{opacity:1}
+  58%{opacity:.7}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(1.18)}
+}
+[data-ritual=shuffle] .aurora{opacity:.78;transform:scale(1.12)}
+[data-ritual=unlock] .aurora{opacity:1;transform:scale(1.32)}
+[data-ritual=unlock] .halo{animation:unlockHaloBoost 1.55s ease-out both}
+[data-ritual=unlock] .halo-two{animation-delay:.12s}
+[data-ritual=unlock] .halo-three{animation-delay:.24s}
+@keyframes unlockHaloBoost{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.38) rotate(-28deg)}
+  32%{opacity:1}
+  66%{opacity:.72}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(1.35) rotate(18deg)}
+}
+[data-ritual=opening] .ritual-light::before{
+  animation:openingShockwave 2.1s ease-out both;
+}
+[data-ritual=opening] .ritual-light::after{
+  animation:wideBloomBoost 3.2s ease-out both;
+}
+[data-ritual=opening] .halo{animation:revealHaloBoost 3s cubic-bezier(.16,.7,.3,1) both}
+[data-ritual=opening] .halo-two{animation-delay:.12s}
+[data-ritual=opening] .halo-three{animation-delay:.24s}
+[data-ritual=opening] .rays{animation:raysBloomBoost 3.2s ease-out both}
+[data-ritual=opening] .stardust i{
+  animation:dustBloomBoost 3s cubic-bezier(.12,.52,.24,1) both;
+  animation-delay:calc(.12s + var(--delay));
+}
+@keyframes openingShockwave{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}
+  18%{opacity:1}
+  52%{opacity:.6}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(1.35)}
+}
+@keyframes wideBloomBoost{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.38)}
+  18%{opacity:1}
+  42%{opacity:.76}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(1.3)}
+}
+@keyframes revealHaloBoost{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.22) rotate(-35deg)}
+  20%{opacity:1}
+  68%{opacity:.68}
+  100%{opacity:.24;transform:translate(-50%,-50%) scale(1.22) rotate(34deg)}
+}
+@keyframes raysBloomBoost{
+  0%{opacity:0;transform:scale(.35) rotate(-18deg)}
+  20%{opacity:1}
+  58%{opacity:.62}
+  100%{opacity:0;transform:scale(1.35) rotate(18deg)}
+}
+@keyframes dustBloomBoost{
+  0%{opacity:0;transform:translate(0,0) scale(.25)}
+  15%{opacity:1}
+  38%{opacity:.55}
+  56%{opacity:1}
+  100%{opacity:0;transform:scale(1.32) translate(var(--dx),var(--dy))}
+}
+[data-ritual=hush] .reveal-card{
+  filter:drop-shadow(0 0 18px #fff0b5d6) drop-shadow(0 0 48px #c5a3ef8f);
+}
+.card-front{
+  box-shadow:
+    0 0 0 3px #ffe4a166,
+    0 0 30px 8px #ffe1a276,
+    0 0 70px 24px #9d89d95c;
+}
+[data-ritual=result] .halo{opacity:.32}
+[data-ritual=result] .aurora{opacity:.62;transform:scale(1.12)}
+[data-ritual=result] .reveal-card{
+  filter:drop-shadow(0 0 18px #ffeab3a6) drop-shadow(0 0 50px #9f8cdb66);
+}
+@media(max-width:420px){
+  .halo-one{width:245px;height:245px}
+  .halo-two{width:300px;height:300px}
+  .halo-three{width:360px;height:360px}
+  .rays{width:410px;height:410px;margin:-205px}
+  .aurora{width:390px;height:390px;margin:-195px}
+}
+@media(prefers-reduced-motion:reduce){
+  .scene.attuned .ritual-light::before,
+  [data-ritual=opening] .ritual-light::before{animation:none!important;opacity:.34;transform:translate(-50%,-50%) scale(.9)}
+}
+
