@@ -58,25 +58,65 @@ body{background:#030710}
   inset:0;
   z-index:2;
   pointer-events:none;
-  background:
-    radial-gradient(circle at 16% 24%,#ffe2aa70 0 2%,#ffc96b38 7%,transparent 19%),
-    radial-gradient(circle at 84% 26%,#fff0c566 0 2%,#ffd37b32 8%,transparent 20%),
-    radial-gradient(ellipse at 50% 57%,#c4b4ff58 0 7%,#927fd62e 18%,transparent 38%),
-    radial-gradient(ellipse at 51% 73%,#8bd8ff4d 0 5%,#6bafe028 17%,transparent 34%);
+  background:radial-gradient(ellipse at 50% 58%,#9c8de51f,transparent 38%);
   mix-blend-mode:screen;
-  opacity:.34;
-  transform:scale(1);
-  transform-origin:50% 48%;
-  will-change:opacity,transform;
-  animation:livingLightBreath 8.5s ease-in-out infinite;
+  opacity:.2;
 }
-@keyframes livingLightBreath{
-  0%,100%{opacity:.3;transform:scale(1);filter:brightness(.9) saturate(1)}
-  42%{opacity:.82;transform:scale(1.025);filter:brightness(1.28) saturate(1.2)}
-  68%{opacity:.5;transform:scale(1.012);filter:brightness(1.08) saturate(1.1)}
+.ambient-lights{
+  position:absolute;
+  inset:0 0 auto;
+  height:var(--art-height);
+  z-index:3;
+  pointer-events:none;
+  overflow:hidden;
+  mix-blend-mode:screen;
+}
+.ambient-light{
+  position:absolute;
+  width:var(--size,110px);
+  aspect-ratio:1;
+  margin:calc(var(--size,110px) / -2);
+  border-radius:50%;
+  opacity:.08;
+  transform:scale(.72);
+  will-change:opacity,transform;
+  background:radial-gradient(circle,#fff 0 2%,var(--core,#fff0c5) 5%,var(--glow,#f6c96e88) 19%,transparent 66%);
+  filter:blur(1px);
+  animation:ambientGroupFlicker var(--duration,7s) ease-in-out var(--delay,0s) infinite;
+}
+.ambient-light::before,.ambient-light::after{
+  content:'';
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  background:linear-gradient(transparent,#fff9dfcc,transparent);
+  border-radius:50%;
+}
+.ambient-light::before{width:2px;height:34%}
+.ambient-light::after{width:30%;height:2px;background:linear-gradient(90deg,transparent,#fff9dfb8,transparent)}
+.ambient-light.cool{--core:#e9f5ff;--glow:#8ccaff8c}
+.ambient-light.pale{--core:#fff;--glow:#c8b5ff80}
+.lamp-left{left:12%;top:25%;--size:116px;--duration:6.3s;--delay:-1.1s}
+.lamp-right{left:87%;top:24%;--size:126px;--duration:8.7s;--delay:-5.4s}
+.window-star{left:63%;top:17%;--size:96px;--duration:5.6s;--delay:-3.2s}
+.owl-glint{left:31%;top:31%;--size:82px;--duration:9.4s;--delay:-7.1s}
+.armillary-glint{left:80%;top:45%;--size:118px;--duration:7.7s;--delay:-2.6s}
+.board-glow{left:50%;top:61%;--size:170px;--duration:10.2s;--delay:-8.4s}
+.lower-left{left:8%;top:68%;--size:105px;--duration:6.9s;--delay:-4.7s}
+.lower-right{left:92%;top:70%;--size:112px;--duration:8.1s;--delay:-.8s}
+@keyframes ambientGroupFlicker{
+  0%,100%{opacity:.06;transform:scale(.7)}
+  11%{opacity:.52;transform:scale(.96)}
+  19%{opacity:.17;transform:scale(.8)}
+  37%{opacity:.72;transform:scale(1.08)}
+  49%{opacity:.1;transform:scale(.76)}
+  68%{opacity:.43;transform:scale(.93)}
+  82%{opacity:.16;transform:scale(.81)}
+  91%{opacity:.58;transform:scale(1)}
 }
 @media(prefers-reduced-motion:reduce){
-  .scene::before{animation:none;opacity:.48;transform:none}
+  .ambient-light{animation:none;opacity:.3;transform:scale(.9)}
 }
 
 
