@@ -50,11 +50,8 @@ body{background:#030710}
 .scene[data-ritual=gather] .orbit-window,.scene[data-ritual=hush] .orbit-window,.scene[data-ritual=opening] .orbit-window,.scene[data-ritual=result] .orbit-window{visibility:hidden}
 .aurora,.halo,.rays,.stardust,.ritual-light::after{left:50%}
 
-/* A restrained ambient drift keeps the illustrated room alive. */
-.scene{
-  background-size:102.5% auto;
-  animation:livingRoomDrift 24s ease-in-out infinite alternate;
-}
+/* The artwork stays fixed; only the light layer breathes. */
+.scene{background-position:center top;background-size:100% auto}
 .scene::before{
   content:'';
   position:absolute;
@@ -62,27 +59,24 @@ body{background:#030710}
   z-index:2;
   pointer-events:none;
   background:
-    radial-gradient(circle at 20% 18%,#ffd99b34 0 2%,transparent 17%),
-    radial-gradient(circle at 78% 22%,#ffe6b52b 0 2%,transparent 16%),
-    radial-gradient(ellipse at 50% 60%,#a897f02b 0 8%,transparent 34%),
-    radial-gradient(ellipse at 52% 75%,#79bce026 0 5%,transparent 31%);
+    radial-gradient(circle at 16% 24%,#ffe2aa70 0 2%,#ffc96b38 7%,transparent 19%),
+    radial-gradient(circle at 84% 26%,#fff0c566 0 2%,#ffd37b32 8%,transparent 20%),
+    radial-gradient(ellipse at 50% 57%,#c4b4ff58 0 7%,#927fd62e 18%,transparent 38%),
+    radial-gradient(ellipse at 51% 73%,#8bd8ff4d 0 5%,#6bafe028 17%,transparent 34%);
   mix-blend-mode:screen;
-  opacity:.42;
-  animation:livingLightBreath 10.5s ease-in-out infinite;
-}
-@keyframes livingRoomDrift{
-  0%{background-position:50% 0;background-size:102.5% auto}
-  45%{background-position:49.35% .25%;background-size:103.4% auto}
-  100%{background-position:50.45% .55%;background-size:104% auto}
+  opacity:.34;
+  transform:scale(1);
+  transform-origin:50% 48%;
+  will-change:opacity,transform;
+  animation:livingLightBreath 8.5s ease-in-out infinite;
 }
 @keyframes livingLightBreath{
-  0%,100%{opacity:.3;filter:brightness(.92) saturate(1)}
-  38%{opacity:.55;filter:brightness(1.18) saturate(1.14)}
-  64%{opacity:.4;filter:brightness(1.03) saturate(1.08)}
+  0%,100%{opacity:.3;transform:scale(1);filter:brightness(.9) saturate(1)}
+  42%{opacity:.82;transform:scale(1.025);filter:brightness(1.28) saturate(1.2)}
+  68%{opacity:.5;transform:scale(1.012);filter:brightness(1.08) saturate(1.1)}
 }
 @media(prefers-reduced-motion:reduce){
-  .scene{animation:none;background-position:center top;background-size:102.5% auto}
-  .scene::before{animation:none;opacity:.36}
+  .scene::before{animation:none;opacity:.48;transform:none}
 }
 
 
