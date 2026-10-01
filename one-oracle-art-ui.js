@@ -214,6 +214,8 @@
   $('restart').addEventListener('click',()=>{
     document.dispatchEvent(new CustomEvent('oracle:reset'));
     if(busy)return;
+    const previousResult=$('journalResult');
+    if(previousResult){previousResult.replaceChildren();previousResult.hidden=true;}
     game.reset();stage='idle';ritual('idle');scene.classList.remove('attuned');scene.classList.remove('playing','cleared','unlocked','dealing');
     deck.hidden=false;deck.className='deck layered';shuffleAdvance.hidden=true;shuffleAdvance.disabled=false;orbit.replaceChildren();refreshDeckDepths();
     for(const id of ['orbitWindow','cutControls','selectionControls','revealCard','restart'])$(id).hidden=true;
@@ -222,4 +224,5 @@
     announce('01 / 問いを心に','心が整ったら、カードを混ぜてください。');action.focus();
   });
 })();
+
 

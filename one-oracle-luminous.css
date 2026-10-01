@@ -257,6 +257,46 @@
 [data-ritual=result] .aurora{opacity:.62;transform:scale(1.12)}
 [data-ritual=result] .reveal-card{
   filter:drop-shadow(0 0 18px #ffeab3a6) drop-shadow(0 0 50px #9f8cdb66);
+  animation:resultCardGlow 5.4s ease-in-out infinite;
+}
+[data-ritual=result] .aurora{
+  animation:resultAuraPulse 6.8s ease-in-out infinite;
+}
+[data-ritual=result] .halo-one{
+  animation:resultHaloBreath 7.6s ease-in-out infinite;
+}
+[data-ritual=result] .halo-two{
+  animation:resultHaloBreath 7.6s ease-in-out -2.5s infinite;
+}
+[data-ritual=result] .halo-three{
+  animation:resultHaloBreath 7.6s ease-in-out -5s infinite;
+}
+[data-ritual=result] .stardust i:nth-child(3n+1){
+  animation:resultStarTwinkle 5.8s ease-in-out infinite;
+  animation-delay:calc(var(--delay) * 4);
+}
+[data-ritual=result] .stardust i:nth-child(5n+2){
+  animation:resultStarTwinkle 7.2s ease-in-out -2.8s infinite;
+}
+@keyframes resultAuraPulse{
+  0%,100%{opacity:.48;transform:scale(1.04) rotate(-2deg)}
+  48%{opacity:.78;transform:scale(1.18) rotate(3deg)}
+  66%{opacity:.62;transform:scale(1.12) rotate(1deg)}
+}
+@keyframes resultHaloBreath{
+  0%,100%{opacity:.18;filter:brightness(.92);transform:translate(-50%,-50%) rotate(27deg) scale(.98)}
+  50%{opacity:.46;filter:brightness(1.35);transform:translate(-50%,-50%) rotate(34deg) scale(1.08)}
+}
+@keyframes resultStarTwinkle{
+  0%,14%,100%{opacity:0;transform:scale(.45)}
+  22%{opacity:.92;transform:scale(1.18)}
+  31%{opacity:.22;transform:scale(.72)}
+  39%{opacity:.76;transform:scale(1)}
+  52%{opacity:0;transform:scale(.55)}
+}
+@keyframes resultCardGlow{
+  0%,100%{filter:drop-shadow(0 0 16px #ffeab394) drop-shadow(0 0 44px #9f8cdb55)}
+  50%{filter:drop-shadow(0 0 24px #fff2c9d1) drop-shadow(0 0 66px #b39ce888)}
 }
 @media(max-width:420px){
   .halo-one{width:245px;height:245px}
@@ -268,5 +308,9 @@
 @media(prefers-reduced-motion:reduce){
   .scene.attuned .ritual-light::before,
   [data-ritual=opening] .ritual-light::before{animation:none!important;opacity:.34;transform:translate(-50%,-50%) scale(.9)}
+  [data-ritual=result] .aurora,
+  [data-ritual=result] .halo,
+  [data-ritual=result] .stardust i,
+  [data-ritual=result] .reveal-card{animation:none!important}
 }
 
