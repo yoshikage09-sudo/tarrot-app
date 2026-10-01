@@ -120,9 +120,9 @@ body{background:#030710}
 /* Exact 380x390 crop supplied from the source artwork; only the eyes differ. */
 .owl-blink-frame{
   position:absolute;
-  left:10.106%;
-  top:14.68%;
-  width:40.426%;
+  left:calc(var(--art-width) * 95 / 940);
+  top:calc(var(--art-width) * 245 / 940);
+  width:calc(var(--art-width) * 380 / 940);
   aspect-ratio:380/390;
   z-index:4;
   pointer-events:none;
