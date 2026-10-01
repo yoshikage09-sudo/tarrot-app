@@ -12,6 +12,13 @@
     return layer;
   }));
   deck.classList.add('layered');
+  const shuffleAdvance=document.createElement('button');
+  shuffleAdvance.id='shuffleAdvance';
+  shuffleAdvance.type='button';
+  shuffleAdvance.className='secondary-button shuffle-advance';
+  shuffleAdvance.textContent='この並びでカットへ進む';
+  shuffleAdvance.hidden=true;
+  action.after(shuffleAdvance);
   let stage='idle', busy=false;
   const dust=$('stardust');
   for(let i=0;i<32;i++){
@@ -97,17 +104,53 @@
   rail.addEventListener('pointerup',endDrag);
   rail.addEventListener('pointercancel',endDrag);
   rail.addEventListener('click',e=>{if(ignoreClick){e.preventDefault();e.stopPropagation();ignoreClick=false;}},true);
+  function refreshDeckDepths(){
+    [...deck.children].forEach((layer,depth)=>layer.style.setProperty('--depth',depth));
+    updateCutVisual();
+  }
+  async function animateVisualShuffle(){
+    deck.classList.add('reshuffling');
+    for(let pass=0;pass<5;pass++){
+      const top=deck.firstElementChild;
+      if(!reduced){
+        const base=getComputedStyle(top).transform;
+        await top.animate([
+          {transform:base},
+          {transform:'translate(72px,-46px) rotate(10deg)',offset:.45},
+          {transform:'translate(9px,15px) rotate(-2deg)'}
+        ],{duration:240,easing:'cubic-bezier(.22,.61,.36,1)'}).finished;
+      }
+      deck.append(top);
+      refreshDeckDepths();
+    }
+    deck.classList.remove('reshuffling');
+  }
+  async function shuffleOnce(first){
+    if(first)game.start();else game.reshuffle();
+    stage='shuffle';ritual('shuffle');shuffleAdvance.hidden=true;
+    announce('02 / カードを混ぜる',first?'トップから順に、カードを混ぜています…':'もう一度、カードの順番を混ぜています…');
+    await animateVisualShuffle();
+    stage='shuffle-ready';
+    announce('02 / カードを混ぜる','もう一度混ぜるか、この並びでカットへ進んでください。');
+    setAction('もう一度混ぜる');shuffleAdvance.hidden=false;shuffleAdvance.disabled=false;
+  }
+  async function advanceToCut(){
+    if(busy||stage!=='shuffle-ready')return;
+    busy=true;action.disabled=true;shuffleAdvance.disabled=true;
+    try{
+      stage='cut';ritual('cut');shuffleAdvance.hidden=true;$('cutControls').hidden=false;deck.classList.add('cutting');updateCutVisual();
+      announce('03 / あなたの位置でカット','直感で、カードを分ける位置を選んでください。');
+      setAction('ここでカットする');$('cutPosition').focus();
+    }finally{busy=false;}
+  }
   async function run(){
     if(busy)return;
     busy=true;action.disabled=true;
     try {
       if(stage==='idle'){
-        game.start();stage='shuffle';ritual('shuffle');
-        announce('02 / カードを混ぜる','カードの束を、静かに重ねています…');
-        deck.classList.add('shuffling');await wait(1660);deck.classList.remove('shuffling');
-        stage='cut';ritual('cut');$('cutControls').hidden=false;deck.classList.add('cutting');
-        announce('03 / あなたの位置でカット','直感で、カードを分ける位置を選んでください。');
-        setAction('ここでカットする');$('cutPosition').focus();
+        await shuffleOnce(true);
+      } else if(stage==='shuffle-ready'){
+        await shuffleOnce(false);
       } else if(stage==='cut'){
         game.cut(Number($('cutPosition').value));stage='unlock';$('cutControls').hidden=true;
         deck.classList.remove('cutting');await wait(350);deck.hidden=true;
@@ -167,11 +210,12 @@
   $('previous').addEventListener('click',()=>choose(game.selected===null?0:(game.selected+21)%22));
   $('next').addEventListener('click',()=>choose(game.selected===null?0:(game.selected+1)%22));
   action.addEventListener('click',run);
+  shuffleAdvance.addEventListener('click',advanceToCut);
   $('restart').addEventListener('click',()=>{
     document.dispatchEvent(new CustomEvent('oracle:reset'));
     if(busy)return;
     game.reset();stage='idle';ritual('idle');scene.classList.remove('attuned');scene.classList.remove('playing','cleared','unlocked','dealing');
-    deck.hidden=false;deck.className='deck';orbit.replaceChildren();
+    deck.hidden=false;deck.className='deck layered';shuffleAdvance.hidden=true;shuffleAdvance.disabled=false;orbit.replaceChildren();refreshDeckDepths();
     for(const id of ['orbitWindow','cutControls','selectionControls','revealCard','restart'])$(id).hidden=true;
     $('revealCard').classList.remove('flipped');$('cutPosition').value=11;$('cutValue').value='11 / 22';
     action.hidden=false;setAction('カードを混ぜる');
