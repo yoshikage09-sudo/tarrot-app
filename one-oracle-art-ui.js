@@ -5,6 +5,13 @@
   const scene=$('scene'), deck=$('deck'), action=$('action'), orbit=$('orbit');
   const game=new OracleCore.Oracle();
   const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  deck.replaceChildren(...Array.from({length:22},(_,depth)=>{
+    const layer=document.createElement('i');
+    layer.style.setProperty('--depth',depth);
+    layer.setAttribute('aria-hidden','true');
+    return layer;
+  }));
+  deck.classList.add('layered');
   let stage='idle', busy=false;
   const dust=$('stardust');
   for(let i=0;i<32;i++){
@@ -145,11 +152,15 @@
     } finally {busy=false;}
   }
   function updateCutVisual(){
-    const value=Number($('cutPosition').value),visual=OracleMotion.cutVisual(value,22);
+    const value=Number($('cutPosition').value),layers=OracleMotion.cutLayers(value,22);
     $('cutValue').value=`${value} / 22`;
-    deck.style.setProperty('--cut-x',`${visual.shiftX}px`);
-    deck.style.setProperty('--cut-y',`${visual.shiftY}px`);
-    deck.style.setProperty('--cut-r',`${visual.rotation}deg`);
+    [...deck.children].forEach((layer,index)=>{
+      const upper=layers[index].packet==='upper';
+      layer.classList.toggle('cut-upper',upper);
+      layer.classList.toggle('cut-lower',!upper);
+      layer.classList.toggle('cut-edge-upper',index===value-1);
+      layer.classList.toggle('cut-edge-lower',index===value);
+    });
   }
   $('cutPosition').addEventListener('input',updateCutVisual);
   updateCutVisual();

@@ -25,3 +25,17 @@ test('cut visual separation grows with the selected cut position',()=>{
   assert.ok(middle.shiftX<deep.shiftX);
   assert.equal(middle.ratio,.5);
 });
+
+test('moving the cut by one step transfers exactly one card layer',()=>{
+  const eleven=Motion.cutLayers(11,22),twelve=Motion.cutLayers(12,22);
+  assert.equal(eleven.filter(layer=>layer.packet==='upper').length,11);
+  assert.equal(twelve.filter(layer=>layer.packet==='upper').length,12);
+  assert.equal(eleven.filter((layer,index)=>layer.packet!==twelve[index].packet).length,1);
+  assert.equal(eleven[11].packet,'lower');
+  assert.equal(twelve[11].packet,'upper');
+});
+
+test('cut layers keep stable top-to-bottom depth indexes',()=>{
+  const layers=Motion.cutLayers(3,22);
+  assert.deepEqual(layers.map(layer=>layer.depth),Array.from({length:22},(_,index)=>index));
+});

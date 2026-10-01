@@ -13,7 +13,11 @@ function cutVisual(at,count){
   const ratio=Math.max(0,Math.min(1,at/count));
   return {ratio,shiftX:18+ratio*48,shiftY:-9-ratio*16,rotation:2+ratio*7};
 }
-const api={stepMomentum,cutVisual};
+function cutLayers(at,count){
+  const cut=Math.max(0,Math.min(count,Math.trunc(at)));
+  return Array.from({length:count},(_,depth)=>({depth,packet:depth<cut?'upper':'lower'}));
+}
+const api={stepMomentum,cutVisual,cutLayers};
 if(typeof module!=='undefined'&&module.exports)module.exports=api;
 else root.OracleMotion=api;
 })(globalThis);
