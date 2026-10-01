@@ -64,3 +64,9 @@ input[type=range]{width:100%;height:44px;accent-color:var(--gold)}
 .scene.playing .diagram{opacity:1}
 @media(min-width:700px){.orbit{width:1100px}.room{height:480px}.bottom{padding-top:12px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* Interactive momentum and visual cut depth. */
+.deck{--cut-x:42px;--cut-y:-17px;--cut-r:5deg}
+.deck.cutting i:nth-child(2){transform:translate(calc(var(--cut-x) * -.12),calc(var(--cut-y) * -.12));transition:transform .18s ease-out}
+.deck.cutting i:nth-child(3){transform:translate(var(--cut-x),var(--cut-y)) rotate(var(--cut-r));transition:transform .18s ease-out}
+.orbit-window{touch-action:pan-y}

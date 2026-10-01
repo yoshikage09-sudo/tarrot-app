@@ -53,17 +53,40 @@
     $('orbitWindow').scrollLeft=middle.offsetLeft-($('orbitWindow').clientWidth-middle.offsetWidth)/2;
   }
   const rail=$('orbitWindow');
-  let drag=null,ignoreClick=false;
+  let drag=null,ignoreClick=false,momentumFrame=0;
+  function stopMomentum(){if(momentumFrame)cancelAnimationFrame(momentumFrame);momentumFrame=0;}
+  function snapNearest(){
+    rail.style.scrollSnapType='';
+    if(!orbit.children.length)return;
+    const center=rail.scrollLeft+rail.clientWidth/2;
+    let nearest=orbit.children[0],distance=Infinity;
+    for(const card of orbit.children){const next=Math.abs(card.offsetLeft+card.offsetWidth/2-center);if(next<distance){nearest=card;distance=next;}}
+    rail.scrollTo({left:nearest.offsetLeft-(rail.clientWidth-nearest.offsetWidth)/2,behavior:reduced?'instant':'smooth'});
+  }
+  function coast(velocity){
+    let state={position:rail.scrollLeft,velocity,min:0,max:Math.max(0,rail.scrollWidth-rail.clientWidth)},previous=performance.now();
+    function frame(now){
+      state=OracleMotion.stepMomentum(state,Math.min(32,now-previous));previous=now;rail.scrollLeft=state.position;
+      if(state.velocity!==0)momentumFrame=requestAnimationFrame(frame);else{momentumFrame=0;snapNearest();}
+    }
+    momentumFrame=requestAnimationFrame(frame);
+  }
   rail.addEventListener('pointerdown',e=>{
-    if(e.pointerType!=='mouse'||e.button!==0)return;
-    drag={x:e.clientX,left:rail.scrollLeft,moved:false};ignoreClick=false;
+    if(!e.isPrimary||(e.pointerType==='mouse'&&e.button!==0))return;
+    stopMomentum();drag={pointerId:e.pointerId,startX:e.clientX,lastX:e.clientX,lastTime:performance.now(),velocity:0,moved:false};ignoreClick=false;
   });
   rail.addEventListener('pointermove',e=>{
-    if(!drag)return;
-    if(Math.abs(e.clientX-drag.x)>6){drag.moved=true;rail.setPointerCapture(e.pointerId);rail.style.scrollSnapType='none';}
-    if(drag.moved)rail.scrollLeft=drag.left-(e.clientX-drag.x);
+    if(!drag||e.pointerId!==drag.pointerId)return;
+    const now=performance.now(),dx=e.clientX-drag.lastX,dt=Math.max(1,now-drag.lastTime);
+    if(Math.abs(e.clientX-drag.startX)>6&&!drag.moved){drag.moved=true;rail.setPointerCapture(e.pointerId);rail.style.scrollSnapType='none';}
+    if(drag.moved){e.preventDefault();rail.scrollLeft-=dx;drag.velocity=-dx/dt;}
+    drag.lastX=e.clientX;drag.lastTime=now;
   });
-  function endDrag(){if(!drag)return;ignoreClick=drag.moved;drag=null;rail.style.scrollSnapType='';}
+  function endDrag(e){
+    if(!drag||e.pointerId!==drag.pointerId)return;
+    const moved=drag.moved,velocity=drag.velocity;ignoreClick=moved;drag=null;
+    if(moved&&!reduced&&Math.abs(velocity)>=.02)coast(velocity);else snapNearest();
+  }
   rail.addEventListener('pointerup',endDrag);
   rail.addEventListener('pointercancel',endDrag);
   rail.addEventListener('click',e=>{if(ignoreClick){e.preventDefault();e.stopPropagation();ignoreClick=false;}},true);
@@ -121,7 +144,15 @@
       }
     } finally {busy=false;}
   }
-  $('cutPosition').addEventListener('input',()=>{$('cutValue').value=`${$('cutPosition').value} / 22`;});
+  function updateCutVisual(){
+    const value=Number($('cutPosition').value),visual=OracleMotion.cutVisual(value,22);
+    $('cutValue').value=`${value} / 22`;
+    deck.style.setProperty('--cut-x',`${visual.shiftX}px`);
+    deck.style.setProperty('--cut-y',`${visual.shiftY}px`);
+    deck.style.setProperty('--cut-r',`${visual.rotation}deg`);
+  }
+  $('cutPosition').addEventListener('input',updateCutVisual);
+  updateCutVisual();
   $('previous').addEventListener('click',()=>choose(game.selected===null?0:(game.selected+21)%22));
   $('next').addEventListener('click',()=>choose(game.selected===null?0:(game.selected+1)%22));
   action.addEventListener('click',run);
