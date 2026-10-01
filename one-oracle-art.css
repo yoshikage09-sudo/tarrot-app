@@ -69,7 +69,7 @@ body{background:#030710}
   z-index:3;
   pointer-events:none;
   overflow:hidden;
-  mix-blend-mode:screen;
+  mix-blend-mode:normal;
 }
 .ambient-light{
   position:absolute;
@@ -80,6 +80,7 @@ body{background:#030710}
   opacity:.08;
   transform:scale(.72);
   will-change:opacity,transform;
+  mix-blend-mode:plus-lighter;
   background:radial-gradient(circle,#fff 0 3%,var(--core,#fff4d9e8) 11%,var(--glow,#ffd27d8f) 31%,var(--fade,#ffc15a24) 54%,transparent 74%);
   animation:ambientGroupFlicker var(--duration,7s) ease-in-out var(--delay,0s) infinite;
 }
