@@ -190,6 +190,8 @@
         scene.classList.remove('unlocked');void scene.offsetWidth;scene.classList.add('playing','cleared');
         await wait(2900);stage='result';ritual('result');
         announce('07 / あなたの一枚',`${card.name} — 星の書庫から、一枚の記録が届きました。`);
+        const questionWrap=document.querySelector('.reading-question-wrap');
+        if(questionWrap)questionWrap.hidden=true;
         action.hidden=true;$('restart').hidden=false;document.dispatchEvent(new CustomEvent('oracle:result',{detail:{cardId:card.id}}));
       }
     } finally {busy=false;}
@@ -216,6 +218,8 @@
     if(busy)return;
     const previousResult=$('journalResult');
     if(previousResult){previousResult.replaceChildren();previousResult.hidden=true;}
+    const questionWrap=document.querySelector('.reading-question-wrap');
+    if(questionWrap)questionWrap.hidden=false;
     game.reset();stage='idle';ritual('idle');scene.classList.remove('attuned');scene.classList.remove('playing','cleared','unlocked','dealing');
     deck.hidden=false;deck.className='deck layered';shuffleAdvance.hidden=true;shuffleAdvance.disabled=false;orbit.replaceChildren();refreshDeckDepths();
     for(const id of ['orbitWindow','cutControls','selectionControls','revealCard','restart'])$(id).hidden=true;
