@@ -117,96 +117,20 @@ body{background:#030710}
   .ambient-light{animation:none;opacity:.3;transform:scale(.9)}
 }
 
-/* The moving owl layers reuse the room artwork itself, so the character's
-   drawing, color and lighting remain identical while resting. */
-.owl-pixel-motion{
+/* Exact 380x390 crop supplied from the source artwork; only the eyes differ. */
+.owl-blink-frame{
   position:absolute;
-  inset:0 0 auto;
-  height:var(--art-height);
+  left:10.106%;
+  top:14.68%;
+  width:40.426%;
+  aspect-ratio:380/390;
   z-index:4;
-  overflow:hidden;
   pointer-events:none;
-}
-.owl-head-cleanplate,.owl-head-copy,.owl-ear-copy{
-  position:absolute;
-  inset:0;
-}
-.owl-head-cleanplate{
-  z-index:1;
-  background:url('assets/astral/oracle-room-head-cleanplate.jpg') center top / 100% auto no-repeat;
-  -webkit-mask-image:radial-gradient(ellipse 22.5% 14.5% at 27% 27%,#000 65%,transparent 87%);
-  mask-image:radial-gradient(ellipse 22.5% 14.5% at 27% 27%,#000 65%,transparent 87%);
-}
-.owl-head-copy,.owl-ear-copy{
-  background:url('assets/astral/oracle-room.jpg') center top / 100% auto no-repeat;
-  will-change:transform;
-}
-.owl-head-copy{
-  z-index:3;
-  transform-origin:27.5% 36.5%;
-  -webkit-mask-image:radial-gradient(ellipse 22% 14% at 27% 27%,#000 68%,transparent 88%);
-  mask-image:radial-gradient(ellipse 22% 14% at 27% 27%,#000 68%,transparent 88%);
-}
-.owl-pixel-motion.is-tilting .owl-head-copy{animation:owlNaturalTilt 3.2s cubic-bezier(.42,0,.25,1)}
-.owl-ear-copy{z-index:4}
-.owl-ear-copy-left{
-  transform-origin:19.5% 19%;
-  -webkit-mask-image:radial-gradient(ellipse 7% 5% at 19.5% 19%,#000 56%,transparent 78%);
-  mask-image:radial-gradient(ellipse 7% 5% at 19.5% 19%,#000 56%,transparent 78%);
-}
-.owl-ear-copy-right{
-  transform-origin:39.5% 23%;
-  -webkit-mask-image:radial-gradient(ellipse 7% 5% at 39.5% 23%,#000 56%,transparent 78%);
-  mask-image:radial-gradient(ellipse 7% 5% at 39.5% 23%,#000 56%,transparent 78%);
-}
-.owl-pixel-motion.is-ear-flicking .owl-ear-copy-left{animation:owlEarLeft .7s ease-in-out}
-.owl-pixel-motion.is-ear-flicking .owl-ear-copy-right{animation:owlEarRight .7s ease-in-out .12s}
-.owl-blink-eye{
-  position:absolute;
-  z-index:4;
-  display:block;
-  width:7.2%;
-  height:4.6%;
-  border-radius:50%;
   opacity:0;
-  --eye-angle:13deg;
-  --eye-scale:.98;
-  background:radial-gradient(ellipse at 50% 45%,#f7ead8 0 48%,#e0cdb9 65%,transparent 69%);
+  background:url('assets/astral/owl-head-closed-user.png') center / 100% 100% no-repeat;
+  will-change:opacity;
 }
-.owl-blink-eye::after{
-  content:'';
-  position:absolute;
-  left:12%;right:12%;top:48%;height:20%;
-  border-top:2px solid #32241d;
-  border-radius:50%;
-  filter:drop-shadow(0 1px 1px #a77143aa);
-}
-.owl-blink-eye-left{left:23.2%;top:23.2%}
-.owl-blink-eye-right{left:32.2%;top:26.2%;--eye-scale:.92}
-.owl-pixel-motion.is-blinking .owl-blink-eye{animation:owlBlink 180ms ease-in-out}
-.owl-star-glint{
-  position:absolute;
-  left:34.9%;top:21.8%;
-  width:1.3%;aspect-ratio:1;
-  border-radius:50%;
-  opacity:0;
-  background:#fff7cc;
-  box-shadow:0 0 7px 3px #ffe49bbb,0 0 18px 8px #e8b95b66;
-  mix-blend-mode:plus-lighter;
-}
-.owl-pixel-motion.is-tilting .owl-star-glint{animation:owlStarAnswer 2s ease-in-out .72s}
-@keyframes owlNaturalTilt{
-  0%,10%{transform:rotate(0)}
-  40%,58%{transform:rotate(3.5deg)}
-  100%{transform:rotate(0)}
-}
-@keyframes owlEarLeft{0%,100%{transform:rotate(0)}30%{transform:rotate(-2.2deg)}58%{transform:rotate(1.1deg)}}
-@keyframes owlEarRight{0%,100%{transform:rotate(0)}30%{transform:rotate(2deg)}58%{transform:rotate(-1deg)}}
-@keyframes owlBlink{0%,100%{opacity:0;transform:rotate(var(--eye-angle)) scale(var(--eye-scale)) scaleY(.25)}42%,62%{opacity:1;transform:rotate(var(--eye-angle)) scale(var(--eye-scale)) scaleY(1)}}
-@keyframes owlStarAnswer{0%,100%{opacity:0;transform:scale(.55)}45%{opacity:.85;transform:scale(1.08)}}
-@media(prefers-reduced-motion:reduce){
-  .owl-pixel-motion{display:none}
-}
-
-
+.owl-blink-frame.is-blinking{animation:owlSourceBlink 220ms ease-in-out}
+@keyframes owlSourceBlink{0%,100%{opacity:0}28%,72%{opacity:1}}
+@media(prefers-reduced-motion:reduce){.owl-blink-frame{display:none}}
 
