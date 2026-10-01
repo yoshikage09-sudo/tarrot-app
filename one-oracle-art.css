@@ -84,7 +84,10 @@ body{background:#030710}
   filter:blur(1px);
   animation:ambientGroupFlicker var(--duration,7s) ease-in-out var(--delay,0s) infinite;
 }
-.ambient-light::before,.ambient-light::after{
+.armillary-glint::before,.armillary-glint::after,
+.board-glow::before,.board-glow::after,
+.board-left::before,.board-left::after,
+.board-right::before,.board-right::after{
   content:'';
   position:absolute;
   left:50%;
@@ -93,27 +96,24 @@ body{background:#030710}
   background:linear-gradient(transparent,#fff9dfcc,transparent);
   border-radius:50%;
 }
-.ambient-light::before{width:2px;height:34%}
-.ambient-light::after{width:30%;height:2px;background:linear-gradient(90deg,transparent,#fff9dfb8,transparent)}
+.armillary-glint::before,.board-glow::before,.board-left::before,.board-right::before{width:2px;height:34%}
+.armillary-glint::after,.board-glow::after,.board-left::after,.board-right::after{width:30%;height:2px;background:linear-gradient(90deg,transparent,#fff9dfb8,transparent)}
 .ambient-light.cool{--core:#e9f5ff;--glow:#8ccaff8c}
 .ambient-light.pale{--core:#fff;--glow:#c8b5ff80}
-.lamp-left{left:12%;top:25%;--size:116px;--duration:6.3s;--delay:-1.1s}
-.lamp-right{left:87%;top:24%;--size:126px;--duration:8.7s;--delay:-5.4s}
-.window-star{left:63%;top:17%;--size:96px;--duration:5.6s;--delay:-3.2s}
-.owl-glint{left:31%;top:31%;--size:82px;--duration:9.4s;--delay:-7.1s}
-.armillary-glint{left:80%;top:45%;--size:118px;--duration:7.7s;--delay:-2.6s}
-.board-glow{left:50%;top:61%;--size:170px;--duration:10.2s;--delay:-8.4s}
-.lower-left{left:8%;top:68%;--size:105px;--duration:6.9s;--delay:-4.7s}
-.lower-right{left:92%;top:70%;--size:112px;--duration:8.1s;--delay:-.8s}
+.hanging-left{left:25%;top:3.2%;--size:88px;--duration:18.7s;--delay:-6.2s}
+.hanging-right{left:89.2%;top:3.6%;--size:96px;--duration:22.4s;--delay:-15.1s}
+.sconce-left{left:15.3%;top:14.7%;--size:108px;--duration:16.3s;--delay:-11.8s}
+.sconce-right{left:83.2%;top:19.2%;--size:112px;--duration:20.8s;--delay:-3.7s}
+.far-lamp{left:60.7%;top:33.5%;--size:76px;--duration:14.6s;--delay:-9.4s}
+.armillary-glint{left:79.3%;top:48.6%;--size:94px;--duration:19.5s;--delay:-13.2s}
+.board-glow{left:50.7%;top:66.1%;--size:158px;--duration:23.1s;--delay:-5.5s}
+.board-left{left:21.4%;top:72.5%;--size:82px;--duration:15.8s;--delay:-2.1s}
+.board-right{left:82.3%;top:72.9%;--size:84px;--duration:21.6s;--delay:-17.4s}
 @keyframes ambientGroupFlicker{
-  0%,100%{opacity:.06;transform:scale(.7)}
-  11%{opacity:.52;transform:scale(.96)}
-  19%{opacity:.17;transform:scale(.8)}
-  37%{opacity:.72;transform:scale(1.08)}
-  49%{opacity:.1;transform:scale(.76)}
-  68%{opacity:.43;transform:scale(.93)}
-  82%{opacity:.16;transform:scale(.81)}
-  91%{opacity:.58;transform:scale(1)}
+  0%,100%{opacity:.08;transform:scale(.82)}
+  28%{opacity:.2;transform:scale(.9)}
+  52%{opacity:.68;transform:scale(1.06)}
+  72%{opacity:.3;transform:scale(.94)}
 }
 @media(prefers-reduced-motion:reduce){
   .ambient-light{animation:none;opacity:.3;transform:scale(.9)}
