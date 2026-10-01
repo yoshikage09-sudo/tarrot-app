@@ -11,18 +11,11 @@ body{margin:0;min-height:100svh;display:grid;place-items:center;background:#050a
 main{width:min(100%,480px);padding:24px 18px;text-align:center}
 h1{margin:0 0 8px;font-size:22px;font-weight:400}.note{margin:0 0 18px;color:#c7bdac;font:12px/1.8 sans-serif}
 .stage{position:relative;width:min(100%,380px);aspect-ratio:380/390;margin:auto;overflow:hidden;border-radius:12px;box-shadow:0 18px 50px #000a}
-.base,.ear{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
-.ear{will-change:transform}
-.ear-left{transform-origin:37% 29%;clip-path:polygon(11% 0,49% 0,54% 34%,37% 39%,10% 25%)}
-.ear-right{transform-origin:68% 43%;clip-path:polygon(61% 19%,96% 19%,98% 49%,75% 51%,60% 39%)}
-.stage.play .ear-left{animation:leftEarTwitch .72s cubic-bezier(.4,0,.2,1)}
-.stage.play .ear-right{animation:rightEarTwitch .72s cubic-bezier(.4,0,.2,1) .09s}
-@keyframes leftEarTwitch{0%,100%{transform:rotate(0)}22%{transform:rotate(-1.35deg)}43%{transform:rotate(.7deg)}64%{transform:rotate(-.55deg)}82%{transform:rotate(.2deg)}}
-@keyframes rightEarTwitch{0%,100%{transform:rotate(0)}22%{transform:rotate(1.2deg)}43%{transform:rotate(-.65deg)}64%{transform:rotate(.5deg)}82%{transform:rotate(-.18deg)}}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 button{margin-top:20px;width:min(100%,340px);min-height:50px;border-radius:999px;border:1px solid #c6a75f;color:#fff2cd;background:linear-gradient(#27354a,#0e1727);font:16px inherit;cursor:pointer}
 button:focus-visible{outline:2px solid #fff1b0;outline-offset:4px}
 .status{min-height:22px;margin:12px 0 0;color:#cfbf98;font:12px sans-serif}
-@media(prefers-reduced-motion:reduce){.ear{display:none}}
+@media(prefers-reduced-motion:reduce){button{display:none}}
 </style>
 </head>
 <body>
@@ -30,17 +23,52 @@ button:focus-visible{outline:2px solid #fff1b0;outline-offset:4px}
   <h1>耳羽の動き</h1>
   <p class="note">元画像は変えず、左右の耳先だけを小さく二度動かす確認用です。</p>
   <div class="stage" id="stage" role="img" aria-label="星のフクロウの耳羽モーション">
-    <img class="base" src="assets/astral/owl-head-source-crop.png" alt="">
-    <img class="ear ear-left" src="assets/astral/owl-head-source-crop.png" alt="">
-    <img class="ear ear-right" src="assets/astral/owl-head-source-crop.png" alt="">
+    <canvas id="owlCanvas" width="380" height="390"></canvas>
   </div>
   <button id="play" type="button">耳の動きを確認</button>
   <p class="status" id="status" aria-live="polite">ボタンを押すと一度動きます。</p>
 </main>
 <script>
-const stage=document.getElementById('stage'),button=document.getElementById('play'),statusLine=document.getElementById('status');
-function play(){stage.classList.remove('play');void stage.offsetWidth;stage.classList.add('play');button.disabled=true;statusLine.textContent='耳羽が反応しています…';setTimeout(()=>{stage.classList.remove('play');button.disabled=false;statusLine.textContent='もう一度確認できます。';},950)}
-button.addEventListener('click',play);setTimeout(play,700);
+const canvas=document.getElementById('owlCanvas'),ctx=canvas.getContext('2d',{alpha:false}),button=document.getElementById('play'),statusLine=document.getElementById('status');
+const W=380,H=390,image=new Image();let source,output,playing=false;
+const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
+const smooth=n=>n*n*(3-2*n);
+function field(x,y,cx,cy,rx,ry,rootY){
+  const ellipse=Math.sqrt(((x-cx)/rx)**2+((y-cy)/ry)**2);
+  const radial=smooth(clamp(1-ellipse,0,1));
+  const root=smooth(clamp((rootY-y)/92,0,1));
+  return radial*root;
+}
+function sample(data,x,y,channel){
+  x=clamp(x,0,W-1);y=clamp(y,0,H-1);
+  const x0=Math.floor(x),y0=Math.floor(y),x1=Math.min(W-1,x0+1),y1=Math.min(H-1,y0+1),fx=x-x0,fy=y-y0;
+  const a=data[(y0*W+x0)*4+channel],b=data[(y0*W+x1)*4+channel],c=data[(y1*W+x0)*4+channel],d=data[(y1*W+x1)*4+channel];
+  return a*(1-fx)*(1-fy)+b*fx*(1-fy)+c*(1-fx)*fy+d*fx*fy;
+}
+function render(amount){
+  const src=source.data,dst=output.data;
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+    const left=field(x,y,132,52,88,105,145),right=field(x,y,318,117,72,90,196);
+    const dx=amount*(-3.6*left+3.1*right),dy=Math.abs(amount)*(-.7*left-.5*right);
+    const p=(y*W+x)*4;
+    if(Math.abs(dx)+Math.abs(dy)<.015){dst[p]=src[p];dst[p+1]=src[p+1];dst[p+2]=src[p+2];dst[p+3]=255;continue;}
+    for(let c=0;c<3;c++)dst[p+c]=sample(src,x-dx,y-dy,c);dst[p+3]=255;
+  }
+  ctx.putImageData(output,0,0);
+}
+function play(){
+  if(playing||!source)return;playing=true;button.disabled=true;statusLine.textContent='耳羽が反応しています…';
+  const start=performance.now(),duration=820;
+  function frame(now){
+    const t=clamp((now-start)/duration,0,1),amount=Math.sin(t*Math.PI*4)*Math.pow(1-t,.58);
+    render(amount);
+    if(t<1)requestAnimationFrame(frame);else{render(0);playing=false;button.disabled=false;statusLine.textContent='もう一度確認できます。';}
+  }
+  requestAnimationFrame(frame);
+}
+image.onload=()=>{ctx.drawImage(image,0,0,W,H);source=ctx.getImageData(0,0,W,H);output=ctx.createImageData(W,H);render(0);button.disabled=false;setTimeout(play,700)};
+image.onerror=()=>{statusLine.textContent='画像を読み込めませんでした。';};
+button.disabled=true;button.addEventListener('click',play);image.src='assets/astral/owl-head-source-crop.png';
 </script>
 </body>
 </html>
