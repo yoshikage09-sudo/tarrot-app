@@ -1,14 +1,14 @@
 (() => {
   'use strict';
-  const frame=document.getElementById('owlBlinkFrame');
-  if(!frame||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const frames=[...document.querySelectorAll('.owl-blink-frame')];
+  if(!frames.length||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   let timer=0;
   const blink=()=>{
     if(!document.hidden){
-      frame.classList.remove('is-blinking');
-      void frame.offsetWidth;
-      frame.classList.add('is-blinking');
-      setTimeout(()=>frame.classList.remove('is-blinking'),260);
+      frames.forEach(frame=>frame.classList.remove('is-blinking'));
+      void frames[0].offsetWidth;
+      frames.forEach(frame=>frame.classList.add('is-blinking'));
+      setTimeout(()=>frames.forEach(frame=>frame.classList.remove('is-blinking')),260);
     }
     schedule();
   };
