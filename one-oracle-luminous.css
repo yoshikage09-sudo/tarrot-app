@@ -147,7 +147,10 @@
   mix-blend-mode:screen;
 }
 .orbit-card{
-  box-shadow:0 0 0 1px #d8bb764d,0 12px 24px #0009;
+  box-shadow:0 12px 24px #000b;
+}
+.orbit-card[aria-pressed=false]{
+  filter:none;
 }
 .orbit-card[aria-pressed=true]{
   transform:translateY(-16px) scale(1.07);
